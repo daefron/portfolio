@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+p {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  overflow-y: hidden;
+  height: 400vh;
+  background-color: rgb(17, 17, 17);
+  padding-left: 5vw;
+  padding-block: 2vh;
+}
+#root {
+  height: 100vh;
+  overflow-y: scroll;
+}
+#body {
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-size: 20px;
+  padding-block: 8px;
+}
+.subTitle {
+  font-size: 17px;
+  padding-block: 8px;
+}
+.paragraph {
+  padding-right: 5vw;
+  padding-block: 8px;
+  font-size: 15px;
+}
+.expand {
+  padding-left: 5vw;
+  padding-bottom: 4px;
+}
+.titleHolder {
+  display: flex;
+}
+.titleHolder svg {
+  width: 15px;
+  margin-left: 10px;
+}
