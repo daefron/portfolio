@@ -8,18 +8,14 @@ p {
 }
 body {
   overflow-y: hidden;
-  height: 400vh;
   background-color: rgb(17, 17, 17);
-  padding-left: 5vw;
+  padding-inline: 5vw;
   padding-block: 2vh;
-}
-#root {
-  height: 100vh;
-  overflow-y: scroll;
 }
 #body {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 .title {
   font-size: 20px;
@@ -44,4 +40,15 @@ body {
 .titleHolder svg {
   width: 15px;
   margin-left: 10px;
+}
+.projectTitleHolder {
+  display: flex;
+  justify-content: space-between;
+}
+.projectTitle {
+  color: rgb(100, 100, 100);
+  width:77%;
+}
+.activeProjectTitle {
+  color: white;
 }
