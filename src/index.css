@@ -29,7 +29,6 @@ body {
   grid-template-columns: auto 1fr;
   gap: 5px;
 }
-.inactiveSubTitle,
 .inactiveTitle {
   color: rgb(130, 130, 130);
 }

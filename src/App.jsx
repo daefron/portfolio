@@ -1,7 +1,24 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 export default function App() {
   const [scrollPoint, setScrollPoint] = useState(0);
-  const scrollTabs = ["about", "project1", "project2", "contact"];
+  const tabOrder = ["about", "project1", "project2", "contact"];
+  const scrollDelay = useRef(false);
+  addEventListener("wheel", (event) => {
+    if (scrollDelay.current) {
+      return;
+    }
+    let diff;
+    if (event.deltaY < 0) {
+      diff = -1;
+    } else if (event.deltaY > 0) {
+      diff = 1;
+    }
+    scrollDelay.current = true;
+    setScrollPoint((previous) => previous + diff);
+    setTimeout(() => {
+      scrollDelay.current = false;
+    }, 500);
+  });
   const contentHolder = {
     about: [
       <p key="about-1">
@@ -34,34 +51,11 @@ export default function App() {
   };
 
   function Tab({ title, renderTitle, subTitles }) {
-    function Title({ title, renderTitle }) {
-      let className = "title";
-      if (scrollTabs[scrollPoint] !== title) {
-        className += " inactiveTitle";
-      }
-      return (
-        <p
-          className={className}
-          onClick={() => setScrollPoint(scrollTabs.indexOf(title))}
-        >
-          {renderTitle}
-        </p>
-      );
-    }
-    function Content() {
-      return (
-        <div className="contentHolder">
-          {contentHolder[scrollTabs[scrollPoint]]}
-        </div>
-      );
-    }
     if (!subTitles) {
       return (
-        <div
-          className={scrollTabs[scrollPoint] === title ? "activeTab" : "tab"}
-        >
+        <div className={tabOrder[scrollPoint] === title ? "activeTab" : "tab"}>
           <Title title={title} renderTitle={renderTitle} />
-          {scrollTabs[scrollPoint] === title ? <Content /> : null}
+          {tabOrder[scrollPoint] === title ? <Content /> : null}
         </div>
       );
     }
@@ -69,14 +63,14 @@ export default function App() {
       return (
         <div
           className={
-            scrollTabs[scrollPoint] === subTitles[0][0] ||
-            scrollTabs[scrollPoint] === subTitles[1][0]
+            tabOrder[scrollPoint] === subTitles[0].title ||
+            tabOrder[scrollPoint] === subTitles[1].title
               ? "activeTab"
               : "tab"
           }
         >
-          {scrollTabs[scrollPoint] === subTitles[0][0] ||
-          scrollTabs[scrollPoint] === subTitles[1][0] ? (
+          {tabOrder[scrollPoint] === subTitles[0].title ||
+          tabOrder[scrollPoint] === subTitles[1].title ? (
             <>
               <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
               <Content />
@@ -86,14 +80,35 @@ export default function App() {
           )}
         </div>
       );
+      function Title({ title, renderTitle }) {
+        let className = "title";
+        if (tabOrder[scrollPoint] !== title) {
+          className += " inactiveTitle";
+        }
+        return (
+          <p
+            className={className}
+            onClick={() => setScrollPoint(tabOrder.indexOf(title))}
+          >
+            {renderTitle}
+          </p>
+        );
+      }
+      function Content() {
+        return (
+          <div className="contentHolder">
+            {contentHolder[tabOrder[scrollPoint]]}
+          </div>
+        );
+      }
       function SubTitles({ subTitles, renderTitle }) {
-        function Title() {
+        function SubTitleTitle() {
           return (
             <p
               className="title"
               style={{
                 gridColumn: "1/2",
-                gridRow: Number(scrollTabs[scrollPoint].slice(-1)) + "/3",
+                gridRow: Number(tabOrder[scrollPoint].slice(-1)) + "/3",
               }}
             >
               {renderTitle} -
@@ -105,9 +120,9 @@ export default function App() {
           subTitles.forEach((subTitle) => {
             holder.push(
               <SubTitle
-                key={subTitle[0] + "key"}
-                title={subTitle[0]}
-                renderTitle={subTitle[1]}
+                key={subTitle.title + "key"}
+                title={subTitle.title}
+                renderTitle={subTitle.renderTitle}
               />
             );
           });
@@ -117,15 +132,15 @@ export default function App() {
               gridRow:
                 Number(title.slice(-1)) + "/" + (Number(title.slice(-1)) + 1),
             };
-            let className = "title subTitle";
-            if (scrollTabs[scrollPoint] !== title) {
-              className += " inactiveSubTitle";
+            let className = "title";
+            if (tabOrder[scrollPoint] !== title) {
+              className += " inactiveTitle";
             }
             return (
               <p
                 className={className}
                 style={style}
-                onClick={() => setScrollPoint(scrollTabs.indexOf(title))}
+                onClick={() => setScrollPoint(tabOrder.indexOf(title))}
               >
                 {renderTitle}
               </p>
@@ -135,11 +150,32 @@ export default function App() {
         }
         return (
           <div className="subTitleHolder">
-            <Title />
+            <SubTitleTitle />
             <SubTitleList />
           </div>
         );
       }
+    }
+    function Title({ title, renderTitle }) {
+      let className = "title";
+      if (tabOrder[scrollPoint] !== title) {
+        className += " inactiveTitle";
+      }
+      return (
+        <p
+          className={className}
+          onClick={() => setScrollPoint(tabOrder.indexOf(title))}
+        >
+          {renderTitle}
+        </p>
+      );
+    }
+    function Content() {
+      return (
+        <div className="contentHolder">
+          {contentHolder[tabOrder[scrollPoint]]}
+        </div>
+      );
     }
   }
   return (
@@ -150,8 +186,8 @@ export default function App() {
         title="project1"
         renderTitle="Projects"
         subTitles={[
-          ["project1", "Run Tracker"],
-          ["project2", "Spreadsheet Creep"],
+          { title: "project1", renderTitle: "Run Tracker" },
+          { title: "project2", renderTitle: "Spreadsheet Creep" },
         ]}
       />
       <Tab title="contact" renderTitle="Contact" />
