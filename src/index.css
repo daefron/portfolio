@@ -7,48 +7,29 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 body {
-  overflow-y: hidden;
   background-color: rgb(17, 17, 17);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+#root {
+  height: 90%;
   padding-inline: 5vw;
   padding-block: 2vh;
 }
-#body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 .title {
   font-size: 20px;
-  padding-block: 8px;
+  padding-block: 4px;
 }
-.subTitle {
-  font-size: 17px;
-  padding-block: 8px;
+.activeTab {
+  height: 85%;
 }
-.paragraph {
-  padding-right: 5vw;
-  padding-block: 8px;
-  font-size: 15px;
+.subTitleHolder {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px;
 }
-.expand {
-  padding-left: 5vw;
-  padding-bottom: 4px;
-}
-.titleHolder {
-  display: flex;
-}
-.titleHolder svg {
-  width: 15px;
-  margin-left: 10px;
-}
-.projectTitleHolder {
-  display: flex;
-  justify-content: space-between;
-}
-.projectTitle {
-  color: rgb(100, 100, 100);
-  width:77%;
-}
-.activeProjectTitle {
-  color: white;
+.inactiveSubTitle,
+.inactiveTitle {
+  color: rgb(130, 130, 130);
 }
