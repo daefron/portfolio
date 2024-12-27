@@ -11,18 +11,26 @@ body {
   height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 #root {
-  height: 90%;
-  padding-inline: 5vw;
+  background-color: rgb(20, 20, 20);
+  height: 50%;
+  width: 90%;
+  padding-inline: 3vw;
   padding-block: 2vh;
+  display: flex;
+  flex-direction: column;
 }
 .title {
   font-size: 20px;
   padding-block: 4px;
+  font-weight: bold;
+  cursor: pointer;
 }
-.activeTab {
-  height: 85%;
+.tab {
+  border-top: 1px solid rgb(50, 50, 50);
+  transition: all 1s;
 }
 .subTitleHolder {
   display: grid;
@@ -30,5 +38,9 @@ body {
   gap: 5px;
 }
 .inactiveTitle {
-  color: rgb(130, 130, 130);
+  color: rgb(150, 150, 150);
+}
+.contentHolder {
+  padding-top: 5px;
+  height: max-content;
 }

@@ -1,7 +1,9 @@
+import { animated, useSpring } from "@react-spring/web";
 import { useState, useEffect, useRef } from "react";
 export default function App() {
   const [scrollPoint, setScrollPoint] = useState(0);
   const scrollRef = useRef();
+  const lastScroll = useRef();
   scrollRef.current = scrollPoint;
   const scrollDelay = useRef(false);
   useEffect(() => {
@@ -12,11 +14,13 @@ export default function App() {
       }
       scrollDelay.current = true;
       if (event.deltaY < 0 && scrollRef.current > 0) {
+        lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
       } else if (
         event.deltaY > 0 &&
         scrollRef.current < typeHolder.length - 1
       ) {
+        lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
       setTimeout(() => {
@@ -72,73 +76,131 @@ export default function App() {
       ],
     },
   ];
-
   function Tab({ type, renderTitle, subTitles }) {
+    let selected, lastType, lastSelected;
     const currentType = typeHolder[scrollPoint].type;
+    if (lastScroll.current !== undefined) {
+      lastType = typeHolder[lastScroll.current].type;
+    }
+    const growAnimation = useSpring({
+      from: { flexGrow: 0 },
+      to: { flexGrow: 1 },
+      config: { duration: 100 },
+    });
+    const shrinkAnimation = useSpring({
+      from: { flexGrow: 1 },
+      to: { flexGrow: 0 },
+      config: { duration: 100 },
+    });
     if (!subTitles) {
+      if (currentType === type) {
+        selected = true;
+      } else if (lastType === type) {
+        lastSelected = true;
+      }
       return (
-        <div className={currentType === type ? "activeTab" : "tab"}>
+        <animated.div
+          className={selected ? "tab activeTab" : "tab"}
+          style={
+            selected ? growAnimation : lastSelected ? shrinkAnimation : null
+          }
+        >
           <Title type={type} renderTitle={renderTitle} />
-          {currentType === type ? <Content /> : null}
-        </div>
+          <Content
+            visible={selected ? true : false}
+            animation={
+              selected ? growAnimation : lastSelected ? shrinkAnimation : null
+            }
+          />
+        </animated.div>
       );
     }
     if (subTitles) {
+      const subTitleTypeIsCurrent = subTitles.find(
+        (subTitle) => subTitle.type === currentType
+      );
+      const subTitleTypeIsLast = subTitles.find(
+        (subTitle) => subTitle.type === lastType
+      );
+      const bothAnimation = useSpring({
+        from: { flexGrow: 1 },
+        to: { flexGrow: 1 },
+        config: { duration: 100 },
+      });
+      let both;
+      if (subTitleTypeIsCurrent && subTitleTypeIsLast) {
+        both = true;
+      } else if (subTitleTypeIsCurrent) {
+        selected = true;
+      } else if (subTitleTypeIsLast) {
+        lastSelected = true;
+      }
       return (
-        <div
-          className={
-            currentType === subTitles[0].type ||
-            currentType === subTitles[1].type
-              ? "activeTab"
-              : "tab"
+        <animated.div
+          className={selected ? "tab activeTab" : "tab"}
+          style={
+            selected
+              ? growAnimation
+              : lastSelected
+              ? shrinkAnimation
+              : both
+              ? bothAnimation
+              : null
           }
         >
-          {currentType === subTitles[0].type ||
-          currentType === subTitles[1].type ? (
-            <>
-              <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
-              <Content />
-            </>
-          ) : (
-            <Title type={type} renderTitle={renderTitle} />
-          )}
-        </div>
-      );
-      function Title({ type, renderTitle }) {
-        let className = "title";
-        if (currentType !== type) {
-          className += " inactiveTitle";
-        }
-        return (
-          <p
-            className={className}
-            onClick={() =>
-              setScrollPoint(
-                typeHolder.find((object) => object.type === type).id
-              )
+          <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
+          <Content
+            visible={selected || both ? true : false}
+            animation={
+              selected
+                ? growAnimation
+                : lastSelected
+                ? shrinkAnimation
+                : both
+                ? bothAnimation
+                : null
             }
-          >
-            {renderTitle}
-          </p>
-        );
-      }
-      function Content() {
+          />
+        </animated.div>
+      );
+      function Content({ visible, animation }) {
         return (
-          <div className="contentHolder">{typeHolder[scrollPoint].content}</div>
+          <animated.div className="contentHolder" style={animation}>
+            {visible ? typeHolder[scrollPoint].content : null}
+          </animated.div>
         );
       }
       function SubTitles({ subTitles, renderTitle }) {
         function SubTitleTitle() {
+          let className = "title";
+          if (!subTitleTypeIsCurrent) {
+            className += " inactiveTitle";
+          } else {
+            className += " activeTitle";
+          }
           return (
-            <p
-              className="title"
-              style={{
-                gridColumn: "1/2",
-                gridRow: Number(currentType.slice(-1)) + "/3",
-              }}
-            >
-              {renderTitle} -
-            </p>
+            <>
+              <div
+                style={{
+                  gridColumn: "1/2",
+                  gridRow: "1/2",
+                  display: "flex",
+                }}
+              >
+                <p
+                  className={className}
+                  onClick={() => {
+                    lastScroll.current = scrollRef.current;
+                    setScrollPoint(
+                      typeHolder.find((object) => object.type === type).id
+                    );
+                  }}
+                >
+                  {renderTitle}
+                </p>
+                <p className={className}>&nbsp;-</p>
+              </div>
+            </>
           );
         }
         function SubTitleList() {
@@ -161,16 +223,19 @@ export default function App() {
             let className = "title";
             if (currentType !== type) {
               className += " inactiveTitle";
+            } else {
+              className += " activeTitle";
             }
             return (
               <p
                 className={className}
                 style={style}
-                onClick={() =>
+                onClick={() => {
+                  lastScroll.current = scrollRef.current;
                   setScrollPoint(
                     typeHolder.find((object) => object.type === type).id
-                  )
-                }
+                  );
+                }}
               >
                 {renderTitle}
               </p>
@@ -190,21 +255,28 @@ export default function App() {
       let className = "title";
       if (currentType !== type) {
         className += " inactiveTitle";
+      } else {
+        className += " activeTitle";
       }
       return (
         <p
           className={className}
-          onClick={() =>
-            setScrollPoint(typeHolder.find((object) => object.type === type).id)
-          }
+          onClick={() => {
+            lastScroll.current = scrollRef.current;
+            setScrollPoint(
+              typeHolder.find((object) => object.type === type).id
+            );
+          }}
         >
           {renderTitle}
         </p>
       );
     }
-    function Content() {
+    function Content({ visible, animation }) {
       return (
-        <div className="contentHolder">{typeHolder[scrollPoint].content}</div>
+        <animated.div className="contentHolder" style={animation}>
+          {visible ? typeHolder[scrollPoint].content : null}
+        </animated.div>
       );
     }
   }
