@@ -1,3 +1,5 @@
+import runPage from "./images/runPage.png";
+import spreadsheetPage from "./images/spreadsheetPage.png";
 export function content() {
   return [
     {
@@ -49,7 +51,7 @@ export function content() {
           A custom built dashboard that shows run data gathered from the Fitbit
           API in a variety of graphs and lists.
         </p>,
-        <img key="project1-2" src="/images/runPage.png" />,
+        <img key="project1-2" src={runPage} />,
         <p key="project1-3">
           I had just started getting into running, and I found that Fitbit's
           data visualisation didn't allow for direct comparison of exercises (+
@@ -94,7 +96,7 @@ export function content() {
         <p key="project2-1">
           A "game engine" set within the bounds of a spreadsheet.
         </p>,
-        <img key="project2-2" src="/images/spreadsheetPage.png" />,
+        <img key="project2-2" src={spreadsheetPage} />,
         <p key="project2-3">
           I needed an interesting, first project to make in React, and the first
           thing that came to mind (when I was having a shower of course) was a
