@@ -176,8 +176,8 @@ export default function App() {
           );
         } else {
           animation = useSpring({
-            from: { flexGrow: 1, right: "100%" },
-            to: { flexGrow: 1, right: "0px" },
+            from: { flexGrow: 1, marginLeft: -30, right: "100%" },
+            to: { flexGrow: 1, marginLeft: 0, right: "0px" },
             config: { duration: 0 },
           });
           return (
