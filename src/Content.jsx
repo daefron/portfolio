@@ -19,8 +19,8 @@ export function content() {
         </p>,
         <p key="about-3">It stuck.</p>,
         <p key="about-4">
-          I am now at a point live site I no longer need a guide, and feel
-          "industry ready".
+          I am now at a point where I no longer need a guide, and feel "industry
+          ready".
         </p>,
         <p key="about-5" className="subTitle">
           Skills:
@@ -48,7 +48,7 @@ export function content() {
       type: "project1",
       content: [
         <p key="project1-1">
-          A custom built dashboard that shows run data live site from the Fitbit
+          A custom built dashboard that shows run data gathered from the Fitbit
           API in a variety of graphs and lists.
         </p>,
         <img key="project1-2" src={runPage} />,
