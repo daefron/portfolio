@@ -65,6 +65,9 @@ body {
   transition: all 0.75s;
   position: relative;
 }
+.subContentHolder .contentHolder > * {
+  width: 100%;
+}
 .subTitleHolder {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -81,7 +84,7 @@ body {
   padding-left: 1px;
 }
 .contentHolder > * {
-  width: 99.5%;
+  width: calc(100% - 1px);
   padding-block: 5px;
 }
 .mainDiv {
