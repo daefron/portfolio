@@ -12,7 +12,7 @@ export function content() {
         <p key="about-2">
           Over the years, I have tried to get into programming who knows how
           many times (I even started studying it at uni briefly) but I never
-          could stick with it. My last attempt, I started working through &nbsp;
+          could stick with it. My last attempt, I started working through&nbsp;
           <a target="_blank" href="https://www.theodinproject.com/">
             The Odin Project.
           </a>
