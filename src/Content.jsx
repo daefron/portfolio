@@ -3,7 +3,7 @@ import spreadsheetPage from "./images/spreadsheetPage.png";
 export function content() {
   return [
     {
-      id: 0,
+      scrollId: 0,
       type: "header",
       content: [
         <p key="about-1">
@@ -44,7 +44,7 @@ export function content() {
       ],
     },
     {
-      id: 1,
+      scrollId: 1,
       type: "project1",
       content: [
         <p key="project1-1">
@@ -92,7 +92,7 @@ export function content() {
       ],
     },
     {
-      id: 2,
+      scrollId: 2,
       type: "project2",
       content: [
         <p key="project2-1">
@@ -136,7 +136,7 @@ export function content() {
       ],
     },
     {
-      id: 3,
+      scrollId: 3,
       type: "contact",
       content: [
         <div key="contact-1" style={{ display: "flex" }}>

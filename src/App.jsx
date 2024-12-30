@@ -72,229 +72,264 @@ export default function App() {
   }, []);
 
   function Tab({ type, renderTitle, subTitles }) {
-    let selected, lastType, lastSelected, animation;
-    const currentType = typeHolder[scrollPoint].type;
-    if (lastScroll.current !== undefined) {
-      lastType = typeHolder[lastScroll.current].type;
-    }
-    function contentAnimation(visible) {
-      let animation;
-      const growAnimation = useSpring({
+    const animations = {
+      growTab: useSpring({
+        from: { flexGrow: 0 },
+        to: { flexGrow: 1 },
+        config: { duration: 0 },
+      }),
+      shrinkTab: useSpring({
+        from: { flexGrow: 1 },
+        to: { flexGrow: 0 },
+        config: { duration: 0 },
+      }),
+      grow: useSpring({
         from: { flexGrow: 0, height: 0 },
         to: { flexGrow: 1, maxHeight: "maxContent" },
         config: { duration: 0 },
-      });
-      const shrinkAnimation = useSpring({
+      }),
+      shrink: useSpring({
         from: { flexGrow: 1, maxHeight: "maxContent" },
         to: { flexGrow: 0, height: 0 },
         config: { duration: 0 },
-      });
-      const noAnimation = useSpring({
-        from: { flexGrow: 0, maxHeight: 0 },
-        to: { flexGrow: 0, height: 0 },
-        config: { duration: 0 },
-      });
-      if (visible === true) {
-        animation = growAnimation;
-      } else if (visible === "last") {
-        animation = shrinkAnimation;
-      } else {
-        animation = noAnimation;
-      }
-      return animation;
-    }
-    const growAnimation = useSpring({
-      from: { flexGrow: 0 },
-      to: { flexGrow: 1 },
-      config: { duration: 0 },
-    });
-    const shrinkAnimation = useSpring({
-      from: { flexGrow: 1 },
-      to: { flexGrow: 0 },
-      config: { duration: 0 },
-    });
-    if (!subTitles) {
-      if (currentType === type) {
-        selected = true;
-      } else if (lastType === type) {
-        lastSelected = true;
-      }
-      let className = "tab";
-      if (type === "header") {
-        className += " header";
-      }
-      return (
-        <animated.div
-          className={className}
-          style={
-            selected ? growAnimation : lastSelected ? shrinkAnimation : null
-          }
-        >
-          <Title type={type} renderTitle={renderTitle} />
-          <Content visible={selected ? true : lastSelected ? "last" : false} />
-        </animated.div>
-      );
-    }
-    if (subTitles) {
-      const subTitleTypeIsCurrent = subTitles.find(
-        (subTitle) => subTitle.type === currentType
-      );
-      const subTitleTypeIsLast = subTitles.find(
-        (subTitle) => subTitle.type === lastType
-      );
-      const bothAnimation = useSpring({
+      }),
+      both: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 1 },
         config: { duration: 0 },
-      });
-      let visible;
-      if (subTitleTypeIsCurrent && subTitleTypeIsLast) {
-        animation = bothAnimation;
-        visible = "both";
-      } else if (subTitleTypeIsCurrent) {
-        animation = growAnimation;
-        visible = true;
-      } else if (subTitleTypeIsLast) {
-        animation = shrinkAnimation;
-        visible = "last";
-      }
-      if (visible === "both") {
-        if (typeHolder[scrollPoint + 1].type !== subTitleTypeIsLast.type) {
-          animation = useSpring({
-            from: { flexGrow: 1, right: "0px" },
-            to: { flexGrow: 1, right: "calc(100% + 30px)" },
-            config: { duration: 0 },
-          });
-          return (
-            <div className="tab" style={{ flexGrow: 1 }}>
-              <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
-              <animated.div className="subContentHolder" style={animation}>
-                <StaticContent visible={"last"} />
-                <StaticContent visible={visible} />
-              </animated.div>
-            </div>
-          );
-        } else {
-          animation = useSpring({
-            from: { flexGrow: 1, marginLeft: -30, right: "100%" },
-            to: { flexGrow: 1, marginLeft: 0, right: "0px" },
-            config: { duration: 0 },
-          });
-          return (
-            <div className="tab" style={{ flexGrow: 1 }}>
-              <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
-              <animated.div className="subContentHolder" style={animation}>
-                <StaticContent visible={visible} />
-                <StaticContent visible={"last"} />
-              </animated.div>
-            </div>
-          );
-        }
-        function StaticContent({ visible }) {
-          return (
-            <div className="contentHolder">
-              {visible === "last"
-                ? typeHolder[lastScroll.current].content
-                : visible
-                ? typeHolder[scrollPoint].content
-                : null}
-            </div>
-          );
-        }
+      }),
+      left: useSpring({
+        from: { flexGrow: 1, right: "0px", height: "100%" },
+        to: { flexGrow: 1, right: "calc(100% + 30px)", height: "100%" },
+        config: { duration: 0 },
+      }),
+      right: useSpring({
+        from: { flexGrow: 1, marginLeft: -30, right: "100%" },
+        to: { flexGrow: 1, marginLeft: 0, right: "0px" },
+        config: { duration: 0 },
+      }),
+    };
+
+    let lastEntry;
+    const currentEntry = typeHolder[scrollPoint];
+    const thisEntry = typeHolder.find((entry) => entry.type === type);
+    if (lastScroll.current !== undefined) {
+      lastEntry = typeHolder[lastScroll.current];
+    }
+
+    if (!subTitles) {
+      return standardRender();
+    }
+    if (subTitles) {
+      return subTitleRender();
+    }
+
+    function standardRender() {
+      let selected, lastSelected;
+      if (currentEntry === thisEntry) {
+        selected = true;
+      } else if (lastEntry === thisEntry) {
+        lastSelected = true;
       }
       return (
-        <animated.div className="tab" style={animation}>
-          <SubTitles subTitles={subTitles} renderTitle={renderTitle} />
-          <Content visible={visible} />
+        <animated.div
+          className={type === "header" ? "tab header" : "tab"}
+          style={
+            selected
+              ? animations.growTab
+              : lastSelected
+              ? animations.shrinkTab
+              : null
+          }
+        >
+          <Title />
+          <Content />
         </animated.div>
       );
-      function Content({ visible }) {
-        const animation = contentAnimation(visible);
+      function Title() {
         return (
-          <animated.div className="contentHolder" style={animation}>
-            {visible === "last"
+          <p
+            className={
+              currentEntry !== thisEntry ? "title inactiveTitle" : "title"
+            }
+            onMouseOver={(e) => {
+              if (e.target.className.includes("inactive")) {
+                e.target.style.color = "rgb(190, 190, 190)";
+              }
+            }}
+            onMouseOut={(e) => {
+              if (e.target.className.includes("inactive")) {
+                e.target.style.color = "rgb(150, 150, 150)";
+              }
+            }}
+            onClick={() => {
+              lastScroll.current = scrollRef.current;
+              setScrollPoint(thisEntry.scrollId);
+            }}
+          >
+            {renderTitle}
+          </p>
+        );
+      }
+      function Content() {
+        return (
+          <animated.div
+            className="contentHolder"
+            style={
+              selected
+                ? animations.grow
+                : lastSelected
+                ? animations.shrink
+                : null
+            }
+          >
+            {selected
+              ? thisEntry.content
+              : lastSelected
               ? typeHolder[lastScroll.current].content
-              : visible
-              ? typeHolder[scrollPoint].content
               : null}
           </animated.div>
         );
       }
-      function SubTitles({ subTitles, renderTitle }) {
+    }
+    function subTitleRender() {
+      let subTitleIsCurrent, subTitleIsLast;
+      subTitles.forEach((subTitle) => {
+        const thisEntry = typeHolder.find(
+          (entry) => entry.type === subTitle.type
+        );
+        if (thisEntry === currentEntry) {
+          subTitleIsCurrent = thisEntry;
+        } else if (lastEntry && thisEntry === lastEntry) {
+          subTitleIsLast = thisEntry;
+        }
+      });
+      if (subTitleIsCurrent && subTitleIsLast) {
+        return BothVisible();
+      }
+      return OneVisible();
+      function BothVisible() {
+        const lastScrollDirection = scrollPoint + 1 === subTitleIsLast.scrollId;
+        return (
+          <div className="tab" style={{ flexGrow: 1 }}>
+            <SubTitlesHead />
+            <animated.div
+              className="subContentHolder"
+              style={lastScrollDirection ? animations.right : animations.left}
+            >
+              <div className="contentHolder">
+                {lastScrollDirection
+                  ? subTitleIsCurrent.content
+                  : subTitleIsLast.content}
+              </div>
+              <div className="contentHolder">
+                {!lastScrollDirection
+                  ? subTitleIsCurrent.content
+                  : subTitleIsLast.content}
+              </div>
+            </animated.div>
+          </div>
+        );
+      }
+      function OneVisible() {
+        return (
+          <animated.div
+            className="tab"
+            style={
+              subTitleIsCurrent
+                ? animations.growTab
+                : subTitleIsLast
+                ? animations.shrinkTab
+                : null
+            }
+          >
+            <SubTitlesHead />
+            <Content />
+          </animated.div>
+        );
+      }
+      function Content() {
+        return (
+          <animated.div
+            className="contentHolder"
+            style={
+              subTitleIsCurrent
+                ? animations.grow
+                : subTitleIsLast
+                ? animations.shrink
+                : null
+            }
+          >
+            {subTitleIsLast
+              ? subTitleIsLast.content
+              : subTitleIsCurrent
+              ? subTitleIsCurrent.content
+              : null}
+          </animated.div>
+        );
+      }
+      function SubTitlesHead() {
         function SubTitleTitle() {
-          let className = "title";
-          if (!subTitleTypeIsCurrent) {
-            className += " inactiveTitle";
-          } else {
-            className += " activeTitle";
-          }
           return (
-            <>
-              <div
-                style={{
-                  gridColumn: "1/2",
-                  gridRow: "1/2",
-                  display: "flex",
+            <div
+              style={{
+                gridColumn: "1/2",
+                gridRow: "1/2",
+                display: "flex",
+              }}
+            >
+              <p
+                className={!subTitleIsCurrent ? "title inactiveTitle" : "title"}
+                onClick={() => {
+                  lastScroll.current = scrollRef.current;
+                  setScrollPoint(
+                    typeHolder.find((entry) => entry.type === type).scrollId
+                  );
+                }}
+                onMouseOver={(e) => {
+                  if (e.target.className.includes("inactive")) {
+                    e.target.style.color = "rgb(190, 190, 190)";
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (e.target.className.includes("inactive")) {
+                    e.target.style.color = "rgb(150, 150, 150)";
+                  }
                 }}
               >
-                <p
-                  className={className}
-                  onClick={() => {
-                    lastScroll.current = scrollRef.current;
-                    setScrollPoint(
-                      typeHolder.find((object) => object.type === type).id
-                    );
-                  }}
-                  onMouseOver={(e) => {
-                    if (e.target.className.includes("inactive")) {
-                      e.target.style.color = "rgb(190, 190, 190)";
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (e.target.className.includes("inactive")) {
-                      e.target.style.color = "rgb(150, 150, 150)";
-                    }
-                  }}
-                >
-                  {renderTitle}
-                </p>
-                <p className={className}>&nbsp;-</p>
-              </div>
-            </>
+                {renderTitle} -
+              </p>
+            </div>
           );
         }
         function SubTitleList() {
           let holder = [];
-          subTitles.forEach((subTitle) => {
+          subTitles.forEach((subTitle, i) => {
+            const thisEntry = typeHolder.find(
+              (entry) => entry.type === subTitle.type
+            );
             holder.push(
-              <SubTitle
+              <SubTitleContent
                 key={subTitle.type + "key"}
-                type={subTitle.type}
+                subTitle={thisEntry}
                 renderTitle={subTitle.renderTitle}
+                index={i}
               />
             );
           });
-          function SubTitle({ type, renderTitle }) {
-            let style = {
-              gridColumn: "2/3",
-              gridRow:
-                Number(type.slice(-1)) + "/" + (Number(type.slice(-1)) + 1),
-            };
-            let className = "title";
-            if (currentType !== type) {
-              className += " inactiveTitle";
-            } else {
-              className += " activeTitle";
-            }
+          function SubTitleContent({ subTitle, index, renderTitle }) {
             return (
               <p
-                className={className}
-                style={style}
+                className={
+                  currentEntry !== subTitle ? "title inactiveTitle" : "title"
+                }
+                style={{
+                  gridColumn: "2 / 3",
+                  gridRow: index + 1 + " / " + (index + 2),
+                }}
                 onClick={() => {
                   lastScroll.current = scrollRef.current;
-                  setScrollPoint(
-                    typeHolder.find((object) => object.type === type).id
-                  );
+                  setScrollPoint(subTitle.scrollId);
                 }}
                 onMouseOver={(e) => {
                   if (e.target.className.includes("inactive")) {
@@ -321,80 +356,7 @@ export default function App() {
         );
       }
     }
-    function Title({ type, renderTitle }) {
-      let className = "title";
-      if (currentType !== type) {
-        className += " inactiveTitle";
-      } else {
-        className += " activeTitle";
-      }
-      return (
-        <p
-          className={className}
-          onMouseOver={(e) => {
-            if (e.target.className.includes("inactive")) {
-              e.target.style.color = "rgb(190, 190, 190)";
-            }
-          }}
-          onMouseOut={(e) => {
-            if (e.target.className.includes("inactive")) {
-              e.target.style.color = "rgb(150, 150, 150)";
-            }
-          }}
-          onClick={() => {
-            lastScroll.current = scrollRef.current;
-            setScrollPoint(
-              typeHolder.find((object) => object.type === type).id
-            );
-          }}
-        >
-          {renderTitle}
-        </p>
-      );
-    }
-    function Content({ visible, animation }) {
-      const growAnimation = useSpring({
-        from: { flexGrow: 0, height: 0 },
-        to: { flexGrow: 1, maxHeight: "maxContent" },
-        config: { duration: 0 },
-      });
-      const shrinkAnimation = useSpring({
-        from: { flexGrow: 1, maxHeight: "maxContent" },
-        to: { flexGrow: 0, height: 0 },
-        config: { duration: 0 },
-      });
-      const noAnimation = useSpring({
-        from: { flexGrow: 0, maxHeight: 0 },
-        to: { flexGrow: 0, height: 0 },
-        config: { duration: 0 },
-      });
-      if (visible === true) {
-        animation = growAnimation;
-      } else if (visible === "last") {
-        animation = shrinkAnimation;
-      } else {
-        animation = noAnimation;
-      }
-      return (
-        <animated.div className="contentHolder" style={animation}>
-          {visible === "last"
-            ? typeHolder[lastScroll.current].content
-            : visible
-            ? typeHolder[scrollPoint].content
-            : null}
-        </animated.div>
-      );
-    }
   }
-  const initialBlock = useSpring({
-    from: {
-      height: "calc(100%)",
-    },
-    to: {
-      height: "0px",
-    },
-    config: { duration: 0 },
-  });
   return (
     <>
       <div className="blocker top" />
@@ -409,7 +371,18 @@ export default function App() {
           ]}
         />
         <Tab type="contact" renderTitle="Contact" />
-        <animated.div className="initialBlock" style={initialBlock} />
+        <animated.div
+          className="initialBlock"
+          style={useSpring({
+            from: {
+              height: "calc(100%)",
+            },
+            to: {
+              height: "0px",
+            },
+            config: { duration: 0 },
+          })}
+        />
       </div>
       <div className="blocker bottom" />
     </>
