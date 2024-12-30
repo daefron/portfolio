@@ -2,7 +2,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useState, useEffect, useRef } from "react";
 import { content } from "./Content";
 export default function App() {
-  const typeHolder = content();
+  const entryHolder = content();
   const [scrollPoint, setScrollPoint] = useState(0);
   const scrollRef = useRef();
   const lastScroll = useRef();
@@ -36,7 +36,7 @@ export default function App() {
               setScrollPoint((previous) => previous - 1);
             } else if (
               distance > 0 &&
-              scrollRef.current < typeHolder.length - 1
+              scrollRef.current < entryHolder.length - 1
             ) {
               lastScroll.current = scrollRef.current;
               setScrollPoint((previous) => previous + 1);
@@ -53,14 +53,13 @@ export default function App() {
       if (scrollDelay.current) {
         return;
       }
+      removeEventListener("wheel", scrollEvent);
+      const distance = event.deltaY;
       scrollDelay.current = true;
-      if (event.deltaY < 0 && scrollRef.current > 0) {
+      if (distance < 10 && scrollRef.current > 0) {
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
-      } else if (
-        event.deltaY > 0 &&
-        scrollRef.current < typeHolder.length - 1
-      ) {
+      } else if (distance > -10 && scrollRef.current < entryHolder.length - 1) {
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
@@ -68,7 +67,6 @@ export default function App() {
         scrollDelay.current = false;
       }, 800);
     }
-    removeEventListener("wheel", scrollEvent);
   }, []);
 
   function Tab({ type, renderTitle, subTitles }) {
@@ -76,45 +74,40 @@ export default function App() {
       growTab: useSpring({
         from: { flexGrow: 0 },
         to: { flexGrow: 1 },
-        config: { duration: 0 },
+        config: { duration: 100 },
       }),
       shrinkTab: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0 },
-        config: { duration: 0 },
+        config: { duration: 100 },
       }),
       grow: useSpring({
-        from: { flexGrow: 0, height: 0 },
+        from: { flexGrow: 0, maxHeight: 0 },
         to: { flexGrow: 1, maxHeight: "maxContent" },
-        config: { duration: 0 },
+        config: { duration: 100 },
       }),
       shrink: useSpring({
-        from: { flexGrow: 1, maxHeight: "maxContent" },
-        to: { flexGrow: 0, height: 0 },
-        config: { duration: 0 },
-      }),
-      both: useSpring({
         from: { flexGrow: 1 },
-        to: { flexGrow: 1 },
-        config: { duration: 0 },
+        to: { flexGrow: 0, maxHeight: 0 },
+        config: { duration: 100 },
       }),
       left: useSpring({
-        from: { flexGrow: 1, right: "0px", height: "100%" },
-        to: { flexGrow: 1, right: "calc(100% + 30px)", height: "100%" },
-        config: { duration: 0 },
+        from: { flexGrow: 1, right: "0px" },
+        to: { flexGrow: 1, right: "calc(30px + 100%)" },
+        config: { duration: 100 },
       }),
       right: useSpring({
         from: { flexGrow: 1, marginLeft: -30, right: "100%" },
         to: { flexGrow: 1, marginLeft: 0, right: "0px" },
-        config: { duration: 0 },
+        config: { duration: 100 },
       }),
     };
 
     let lastEntry;
-    const currentEntry = typeHolder[scrollPoint];
-    const thisEntry = typeHolder.find((entry) => entry.type === type);
+    const currentEntry = entryHolder[scrollPoint];
+    const thisEntry = entryHolder.find((entry) => entry.type === type);
     if (lastScroll.current !== undefined) {
-      lastEntry = typeHolder[lastScroll.current];
+      lastEntry = entryHolder[lastScroll.current];
     }
 
     if (!subTitles) {
@@ -125,19 +118,19 @@ export default function App() {
     }
 
     function standardRender() {
-      let selected, lastSelected;
+      let selectedEntry, lastSelectedEntry;
       if (currentEntry === thisEntry) {
-        selected = true;
+        selectedEntry = true;
       } else if (lastEntry === thisEntry) {
-        lastSelected = true;
+        lastSelectedEntry = true;
       }
       return (
         <animated.div
           className={type === "header" ? "tab header" : "tab"}
           style={
-            selected
+            selectedEntry
               ? animations.growTab
-              : lastSelected
+              : lastSelectedEntry
               ? animations.shrinkTab
               : null
           }
@@ -149,9 +142,7 @@ export default function App() {
       function Title() {
         return (
           <p
-            className={
-              currentEntry !== thisEntry ? "title inactiveTitle" : "title"
-            }
+            className={!selectedEntry ? "title inactiveTitle" : "title"}
             onMouseOver={(e) => {
               if (e.target.className.includes("inactive")) {
                 e.target.style.color = "rgb(190, 190, 190)";
@@ -176,17 +167,17 @@ export default function App() {
           <animated.div
             className="contentHolder"
             style={
-              selected
+              selectedEntry
                 ? animations.grow
-                : lastSelected
+                : lastSelectedEntry
                 ? animations.shrink
                 : null
             }
           >
-            {selected
+            {selectedEntry
               ? thisEntry.content
-              : lastSelected
-              ? typeHolder[lastScroll.current].content
+              : lastSelectedEntry
+              ? entryHolder[lastScroll.current].content
               : null}
           </animated.div>
         );
@@ -195,7 +186,7 @@ export default function App() {
     function subTitleRender() {
       let subTitleIsCurrent, subTitleIsLast;
       subTitles.forEach((subTitle) => {
-        const thisEntry = typeHolder.find(
+        const thisEntry = entryHolder.find(
           (entry) => entry.type === subTitle.type
         );
         if (thisEntry === currentEntry) {
@@ -205,10 +196,10 @@ export default function App() {
         }
       });
       if (subTitleIsCurrent && subTitleIsLast) {
-        return BothVisible();
+        return HorizontalScroll();
       }
-      return OneVisible();
-      function BothVisible() {
+      return VerticalScroll();
+      function HorizontalScroll() {
         const lastScrollDirection = scrollPoint + 1 === subTitleIsLast.scrollId;
         return (
           <div className="tab" style={{ flexGrow: 1 }}>
@@ -231,7 +222,7 @@ export default function App() {
           </div>
         );
       }
-      function OneVisible() {
+      function VerticalScroll() {
         return (
           <animated.div
             className="tab"
@@ -283,7 +274,7 @@ export default function App() {
                 onClick={() => {
                   lastScroll.current = scrollRef.current;
                   setScrollPoint(
-                    typeHolder.find((entry) => entry.type === type).scrollId
+                    entryHolder.find((entry) => entry.type === type).scrollId
                   );
                 }}
                 onMouseOver={(e) => {
@@ -305,7 +296,7 @@ export default function App() {
         function SubTitleList() {
           let holder = [];
           subTitles.forEach((subTitle, i) => {
-            const thisEntry = typeHolder.find(
+            const thisEntry = entryHolder.find(
               (entry) => entry.type === subTitle.type
             );
             holder.push(
@@ -361,8 +352,9 @@ export default function App() {
     <>
       <div className="blocker top" />
       <div className="mainDiv">
-        <Tab type="header" renderTitle="Thomas Evans" />
+        <Tab key="header" type="header" renderTitle="Thomas Evans" />
         <Tab
+          key="projects"
           type="project1"
           renderTitle="Projects"
           subTitles={[
@@ -370,7 +362,7 @@ export default function App() {
             { type: "project2", renderTitle: "Spreadsheet Creep" },
           ]}
         />
-        <Tab type="contact" renderTitle="Contact" />
+        <Tab key="contact" type="contact" renderTitle="Contact" />
         <animated.div
           className="initialBlock"
           style={useSpring({
