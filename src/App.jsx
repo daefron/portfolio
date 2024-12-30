@@ -372,7 +372,7 @@ export default function App() {
             to: {
               height: "0px",
             },
-            config: { duration: 0 },
+            config: { duration: 100 },
           })}
         />
       </div>
