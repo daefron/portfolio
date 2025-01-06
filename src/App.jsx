@@ -74,32 +74,32 @@ export default function App() {
       growTab: useSpring({
         from: { flexGrow: 0 },
         to: { flexGrow: 1 },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
       shrinkTab: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0 },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
       grow: useSpring({
         from: { flexGrow: 0, maxHeight: 0 },
         to: { flexGrow: 1, maxHeight: "maxContent" },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
       shrink: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0, maxHeight: 0 },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
       left: useSpring({
         from: { flexGrow: 1, marginLeft: "0px", right: "0%" },
         to: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
       right: useSpring({
         from: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
         to: { flexGrow: 1, marginLeft: "0px", right: "0%" },
-        config: { duration: 600, easing: easings.easeOutSine },
+        config: { duration: 600, easing: easings.easeInOutSine },
       }),
     };
 
@@ -396,7 +396,7 @@ export default function App() {
               to: {
                 height: "0px",
               },
-              config: { duration: 600, easing: easings.easeOutSine },
+              config: { duration: 600, easing: easings.easeInOutSine },
             })}
           />
         </div>
