@@ -348,7 +348,7 @@ export default function App() {
       }
     }
   }
-  function PageRef() {
+  function Pagination() {
     const maxScrolls = content().length;
     let points = [];
     for (let i = 0; i < maxScrolls; i++) {
@@ -359,7 +359,7 @@ export default function App() {
       }
     }
     return (
-      <>
+      <div className="pagination">
         {points.map((point, i) => {
           return (
             <div
@@ -368,43 +368,25 @@ export default function App() {
             ></div>
           );
         })}
-      </>
+      </div>
     );
   }
   return (
     <>
-      <div className="mainContent">
-        <div className="blocker top" />
-        <div className="mainDiv">
-          <Tab key="header" type="header" renderTitle="Thomas Evans" />
-          <Tab
-            key="projects"
-            type="project1"
-            renderTitle="Projects"
-            subTitles={[
-              { type: "project1", renderTitle: "Run Tracker" },
-              { type: "project2", renderTitle: "Spreadsheet Creep" },
-            ]}
-          />
-          <Tab key="contact" type="contact" renderTitle="Contact" />
-          <animated.div
-            className="initialBlock"
-            style={useSpring({
-              from: {
-                height: "calc(100%)",
-              },
-              to: {
-                height: "0px",
-              },
-              config: { duration: 600, easing: easings.easeInOutSine },
-            })}
-          />
-        </div>
-        <div className="blocker bottom" />
+      <div className="mainDiv">
+        <Tab key="header" type="header" renderTitle="Thomas Evans" />
+        <Tab
+          key="projects"
+          type="project1"
+          renderTitle="Projects"
+          subTitles={[
+            { type: "project1", renderTitle: "Run Tracker" },
+            { type: "project2", renderTitle: "Spreadsheet Creep" },
+          ]}
+        />
+        <Tab key="contact" type="contact" renderTitle="Contact" />
       </div>
-      <div className="pagination">
-        <PageRef />
-      </div>
+      <Pagination />
     </>
   );
 }

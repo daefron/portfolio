@@ -27,6 +27,7 @@ body {
 }
 #root {
   width: calc(90% + 23px);
+  padding-block: 20px;
   display: flex;
   overflow: hidden;
 }
@@ -44,6 +45,32 @@ body {
   font-size: 14px;
   font-weight: bold;
   margin-top: 2px;
+}
+.mainDiv {
+  background-color: rgb(25, 25, 25);
+  padding-inline: 20px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+.mainDiv > .title {
+  padding-block: 9px;
+}
+.pagination {
+  margin-left: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.pagePoint {
+  background-color: rgb(150, 150, 150);
+  height: 4vh;
+  width: 3px;
+}
+.activePagePoint {
+  background-color: white;
 }
 .tab {
   overflow: hidden;
@@ -84,42 +111,6 @@ body {
 .contentHolder > * {
   width: calc(100% - 1px);
   padding-block: 5px;
-}
-.mainContent {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.mainDiv {
-  background-color: rgb(25, 25, 25);
-  padding-inline: 20px;
-  padding-top: 10px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-}
-.mainDiv > .title {
-  padding-block: 9px;
-}
-.blocker {
-  background-color: rgb(17, 17, 17);
-  height: 20px;
-}
-.pagination {
-  margin-left: 10px;
-  gap: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.pagePoint {
-  background-color: rgb(150, 150, 150);
-  height: 4vh;
-  width: 3px;
-}
-.activePagePoint {
-  background-color: white;
 }
 @media (min-width: 370px) {
   .title {
