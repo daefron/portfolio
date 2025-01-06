@@ -1,4 +1,4 @@
-import { animated, useSpring } from "@react-spring/web";
+import { animated, useSpring, easings } from "@react-spring/web";
 import { useState, useEffect, useRef } from "react";
 import { content } from "./Content";
 export default function App() {
@@ -74,32 +74,32 @@ export default function App() {
       growTab: useSpring({
         from: { flexGrow: 0 },
         to: { flexGrow: 1 },
-        config: { duration: 100 },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
       shrinkTab: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0 },
-        config: { duration: 100 },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
       grow: useSpring({
         from: { flexGrow: 0, maxHeight: 0 },
         to: { flexGrow: 1, maxHeight: "maxContent" },
-        config: { duration: 100 },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
       shrink: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0, maxHeight: 0 },
-        config: { duration: 100 },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
       left: useSpring({
-        from: { flexGrow: 1, right: "0px" },
-        to: { flexGrow: 1, right: "calc(30px + 100%)" },
-        config: { duration: 100 },
+        from: { flexGrow: 1, marginLeft: "0px", right: "0%" },
+        to: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
       right: useSpring({
-        from: { flexGrow: 1, marginLeft: -30, right: "100%" },
-        to: { flexGrow: 1, marginLeft: 0, right: "0px" },
-        config: { duration: 100 },
+        from: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
+        to: { flexGrow: 1, marginLeft: "0px", right: "0%" },
+        config: { duration: 600, easing: easings.easeOutSine },
       }),
     };
 
@@ -348,35 +348,63 @@ export default function App() {
       }
     }
   }
+  function PageRef() {
+    const maxScrolls = content().length;
+    let points = [];
+    for (let i = 0; i < maxScrolls; i++) {
+      if (i === scrollPoint) {
+        points.push(true);
+      } else {
+        points.push(false);
+      }
+    }
+    return (
+      <>
+        {points.map((point, i) => {
+          return (
+            <div
+              key={i + "pagePoint"}
+              className={point ? "pagePoint activePagePoint" : "pagePoint"}
+            ></div>
+          );
+        })}
+      </>
+    );
+  }
   return (
     <>
-      <div className="blocker top" />
-      <div className="mainDiv">
-        <Tab key="header" type="header" renderTitle="Thomas Evans" />
-        <Tab
-          key="projects"
-          type="project1"
-          renderTitle="Projects"
-          subTitles={[
-            { type: "project1", renderTitle: "Run Tracker" },
-            { type: "project2", renderTitle: "Spreadsheet Creep" },
-          ]}
-        />
-        <Tab key="contact" type="contact" renderTitle="Contact" />
-        <animated.div
-          className="initialBlock"
-          style={useSpring({
-            from: {
-              height: "calc(100%)",
-            },
-            to: {
-              height: "0px",
-            },
-            config: { duration: 100 },
-          })}
-        />
+      <div className="mainContent">
+        <div className="blocker top" />
+        <div className="mainDiv">
+          <Tab key="header" type="header" renderTitle="Thomas Evans" />
+          <Tab
+            key="projects"
+            type="project1"
+            renderTitle="Projects"
+            subTitles={[
+              { type: "project1", renderTitle: "Run Tracker" },
+              { type: "project2", renderTitle: "Spreadsheet Creep" },
+            ]}
+          />
+          <Tab key="contact" type="contact" renderTitle="Contact" />
+          <animated.div
+            className="initialBlock"
+            style={useSpring({
+              from: {
+                height: "calc(100%)",
+              },
+              to: {
+                height: "0px",
+              },
+              config: { duration: 600, easing: easings.easeOutSine },
+            })}
+          />
+        </div>
+        <div className="blocker bottom" />
       </div>
-      <div className="blocker bottom" />
+      <div className="pagination">
+        <PageRef />
+      </div>
     </>
   );
 }
