@@ -133,6 +133,9 @@ body {
   body {
     width: 1000px;
   }
+  .videoContent {
+    height: 450px;
+  }
 }
 @media (min-height: 710px) {
   .title {

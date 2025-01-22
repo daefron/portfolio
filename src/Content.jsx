@@ -1,5 +1,5 @@
-import runVideo from "./videos/runVideo.mp4";
-import spreadsheetVideo from "./videos/spreadsheetVideo.mp4";
+import runVideo from "./videos/runVid.mp4";
+import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
 export function content() {
   return [
     {
@@ -51,7 +51,9 @@ export function content() {
           A custom built dashboard that shows run data gathered from the Fitbit
           API in a variety of graphs and lists.
         </p>,
-        <video key="project1-2" src={runVideo} autoPlay muted />,
+        <video key="project1-2" className="videoContent" autoPlay muted>
+          <source src={runVideo} type="video/mp4"></source>
+        </video>,
         <p key="project1-3">
           I had just started getting into running, and I found that Fitbit's
           data visualisation didn't allow for direct comparison of exercises (+
@@ -66,7 +68,13 @@ export function content() {
         <p key="project1-4" className="subTitle">
           Built with:
         </p>,
-        <div style={{ display: "flex", gap: "10px" }} key="project1-5">
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
+          key="project1-5"
+        >
           <a target="_blank" href="https://react.dev/">
             React
           </a>
@@ -75,15 +83,6 @@ export function content() {
           </a>
           <a target="_blank" href="https://recharts.org/">
             PostgreSQL
-          </a>
-          <a target="_blank" href="https://recharts.org/">
-            Recharts
-          </a>
-          <a target="_blank" href="https://www.fitbit.com/dev">
-            Fitbit API
-          </a>
-          <a target="_blank" href="https://open-meteo.com/">
-            Open-Meteo
           </a>
         </div>,
         <p key="project1-6" className="subTitle">
@@ -112,7 +111,10 @@ export function content() {
         <p key="project2-1">
           A "game engine" set within the bounds of a spreadsheet.
         </p>,
-        <video key="project2-2" src={spreadsheetVideo} autoPlay muted />,
+        <video key="project2-2" className="videoContent" autoPlay muted>
+          <source src={spreadsheetVideo} type="video/mp4"></source>
+        </video>,
+
         <p key="project2-3">
           I needed an interesting, first project to make in React, and the first
           thing that came to mind (when I was having a shower of course) was a
