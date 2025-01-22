@@ -385,7 +385,7 @@ export default function App() {
           ]}
         />
         <Tab key="contact" type="contact" renderTitle="Contact" />
-      </div>
+      </div>  
       <Pagination />
     </>
   );

@@ -1,5 +1,5 @@
-import runPage from "./images/runPage.png";
-import spreadsheetPage from "./images/spreadsheetPage.png";
+import runVideo from "./videos/runVideo.mp4";
+import spreadsheetVideo from "./videos/spreadsheetVideo.mp4";
 export function content() {
   return [
     {
@@ -51,12 +51,17 @@ export function content() {
           A custom built dashboard that shows run data gathered from the Fitbit
           API in a variety of graphs and lists.
         </p>,
-        <img key="project1-2" src={runPage} />,
+        <video key="project1-2" src={runVideo} autoPlay muted />,
         <p key="project1-3">
           I had just started getting into running, and I found that Fitbit's
           data visualisation didn't allow for direct comparison of exercises (+
           I felt I needed more experience with APIs and wanted to learn a chart
           library) so I decided to make a dashboard for tracking my runs.
+        </p>,
+        <p key="project1-3-2">
+          Dealing with the Fitbit API's rate limit made me want to learn backend
+          as well, so this also includes a database + API for interfacing with
+          the Fitbit API more efficiently.
         </p>,
         <p key="project1-4" className="subTitle">
           Built with:
@@ -65,11 +70,20 @@ export function content() {
           <a target="_blank" href="https://react.dev/">
             React
           </a>
+          <a target="_blank" href="https://expressjs.com/">
+            Express
+          </a>
+          <a target="_blank" href="https://recharts.org/">
+            PostgreSQL
+          </a>
           <a target="_blank" href="https://recharts.org/">
             Recharts
           </a>
           <a target="_blank" href="https://www.fitbit.com/dev">
             Fitbit API
+          </a>
+          <a target="_blank" href="https://open-meteo.com/">
+            Open-Meteo
           </a>
         </div>,
         <p key="project1-6" className="subTitle">
@@ -98,7 +112,7 @@ export function content() {
         <p key="project2-1">
           A "game engine" set within the bounds of a spreadsheet.
         </p>,
-        <img key="project2-2" src={spreadsheetPage} />,
+        <video key="project2-2" src={spreadsheetVideo} autoPlay muted />,
         <p key="project2-3">
           I needed an interesting, first project to make in React, and the first
           thing that came to mind (when I was having a shower of course) was a
