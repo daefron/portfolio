@@ -7,39 +7,49 @@ export function content() {
       type: "header",
       content: [
         <p key="about-1">
-          I am a completely self-taught front-end web developer.
+          I am a self-taught full-stack developer with a non-linear path into
+          programming.
         </p>,
         <p key="about-2">
-          Over the years, I have tried to get into programming who knows how
-          many times (I even started studying it at uni briefly) but I never
-          could stick with it. My last attempt, I started working through&nbsp;
-          <a target="_blank" href="https://www.theodinproject.com/">
-            The Odin Project.
-          </a>
+          Although I studied programming briefly at university and made several
+          attempts to learn on my own, it just never could stick.
         </p>,
-        <p key="about-3">It stuck.</p>,
+        <p key="about-3">
+          Eventually, I started working through &nbsp;
+          <a target="_blank" href="https://www.theodinproject.com/">
+            The Odin Project
+          </a>
+          , which provided the structure I needed to build a strong foundation.
+        </p>,
         <p key="about-4">
-          I am now at a point where I no longer need a guide, and feel "industry
-          ready".
+          Now, I've reached a point where I no longer rely on guided projects
+          and feel confident in my ability to handle real-world development
+          tasks. I'm ready to apply my skills in an industry setting.
         </p>,
         <p key="about-5" className="subTitle">
           Skills:
         </p>,
         <p key="about-6">
-          At this stage, I would say that I am extremely comfortable with the
-          foundations (HTML, CSS, JS) of front-end web development (enough so
-          that I believe I could make pretty much anything I put my mind to),
-          comfortable with React, and have just started dipping my toes into the
-          back-end.
+          At this point, I feel highly confident in my understanding of
+          front-end web development, particularly the fundamentals (HTML, CSS,
+          and JavaScript), and am comfortable working with React - to the point
+          where I am confident that I could build almost any front-end project I
+          set my mind to.
+        </p>,
+        <p key="about-6-1">
+          Recentlty, I've started exploring back-end development and have taken
+          a liking to it. I'm already comfortable working with Node.js, Express,
+          and SQL so far, with more to come shortly.
         </p>,
         <p key="about-7" className="subTitle">
           This portfolio:
         </p>,
         <p key="about-8">
-          While The Odin Project did get me to make a variety of basic projects,
-          I decided not to include them in this portfolio and only showcase my
-          self-driven projects; they're a hell of a lot better and you probably
-          already know what the weather is...
+          While The Odin Project helped me build a variety of basic projects,
+          I've chosen not to include them in this portfolio. Instead, I'm
+          focusing on showcasing my self-driven projects, as they better
+          represent my skills and abilities. Plus, you probably already know
+          what the weather is...
         </p>,
       ],
     },
@@ -61,9 +71,9 @@ export function content() {
           library) so I decided to make a dashboard for tracking my runs.
         </p>,
         <p key="project1-3-2">
-          Dealing with the Fitbit API's rate limit made me want to learn backend
-          as well, so this also includes a database + API for interfacing with
-          the Fitbit API more efficiently.
+          Dealing with the Fitbit API's request rate limit pretty much forced me
+          to learn backend as well, so this also includes a database + API for
+          interfacing with the Fitbit API more efficiently.
         </p>,
         <p key="project1-4" className="subTitle">
           Built with:
@@ -109,7 +119,7 @@ export function content() {
       type: "project2",
       content: [
         <p key="project2-1">
-          A "game engine" set within the bounds of a spreadsheet.
+          A game/game engine set within the bounds of a spreadsheet.
         </p>,
         <video key="project2-2" className="videoContent" autoPlay muted>
           <source src={spreadsheetVideo} type="video/mp4"></source>
