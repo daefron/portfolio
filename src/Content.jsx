@@ -98,20 +98,20 @@ export function content() {
         <p key="project1-6" className="subTitle">
           Links:
         </p>,
-        <a
+        <div
           key="project1-7"
-          target="_blank"
-          href="https://runtracker.netlify.app"
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
         >
-          Live site
-        </a>,
-        <a
-          key="project1-8"
-          target="_blank"
-          href="https://github.com/daefron/run-tracker"
-        >
-          Project Github
-        </a>,
+          <a target="_blank" href="https://runtracker.netlify.app">
+            Live site
+          </a>
+          <a target="_blank" href="https://github.com/daefron/run-tracker">
+            Project Github
+          </a>
+        </div>,
       ],
     },
     {
@@ -145,20 +145,23 @@ export function content() {
         <p key="project2-7" className="subTitle">
           Links:
         </p>,
-        <a
+        <div
           key="project2-8"
-          target="_blank"
-          href="https://spreadsheetcreep.netlify.app"
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
         >
-          Live site
-        </a>,
-        <a
-          key="project2-9"
-          target="_blank"
-          href="https://github.com/daefron/spreadsheet-creep"
-        >
-          Project Github
-        </a>,
+          <a target="_blank" href="https://spreadsheetcreep.netlify.app">
+            Live site
+          </a>
+          <a
+            target="_blank"
+            href="https://github.com/daefron/spreadsheet-creep"
+          >
+            Project Github
+          </a>
+        </div>,
       ],
     },
     {

@@ -112,16 +112,16 @@ body {
   width: calc(100% - 1px);
   padding-block: 5px;
 }
-@media (min-width: 370px) {
+@media (min-width: 320px) {
   .title {
-    font-size: 17px;
+    font-size: 16px;
   }
   .subTitle {
-    font-size: 15px;
+    font-size: 14px;
   }
   p,
   a {
-    font-size: 13px;
+    font-size: 12px;
   }
 }
 @media (min-width: 612px) {
@@ -134,10 +134,23 @@ body {
     width: 1000px;
   }
   .videoContent {
-    height: 450px;
+    object-fit: fill;
+    height: 500px;
   }
 }
 @media (min-height: 710px) {
+  .title {
+    font-size: 16px;
+  }
+  .subTitle {
+    font-size: 14px;
+  }
+  p,
+  a {
+    font-size: 12px;
+  }
+}
+@media (min-height: 760px) {
   .title {
     font-size: 17px;
   }
@@ -149,7 +162,7 @@ body {
     font-size: 13px;
   }
 }
-@media (min-height: 760px) {
+@media (min-height: 780px) {
   .title {
     font-size: 18px;
   }
@@ -161,7 +174,7 @@ body {
     font-size: 14px;
   }
 }
-@media (min-height: 780px) {
+@media (min-height: 810px) {
   .title {
     font-size: 19px;
   }
@@ -171,17 +184,5 @@ body {
   p,
   a {
     font-size: 15px;
-  }
-}
-@media (min-height: 810px) {
-  .title {
-    font-size: 20px;
-  }
-  .subTitle {
-    font-size: 18px;
-  }
-  p,
-  a {
-    font-size: 16px;
   }
 }
