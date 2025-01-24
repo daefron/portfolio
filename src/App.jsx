@@ -8,6 +8,7 @@ export default function App() {
   const lastScroll = useRef();
   scrollRef.current = scrollPoint;
   const scrollDelay = useRef(false);
+
   useEffect(() => {
     const scrollEvent = addEventListener("wheel", (e) => scroll(e));
     const touchEndEvent = addEventListener("touchend", touchEnd);
@@ -54,12 +55,12 @@ export default function App() {
         return;
       }
       removeEventListener("wheel", scrollEvent);
-      const distance = event.deltaY;
       scrollDelay.current = true;
-      if (distance < 10 && scrollRef.current > 0) {
+      const distance = event.deltaY;
+      if (distance < -5 && scrollRef.current > 0) {
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
-      } else if (distance > -10 && scrollRef.current < entryHolder.length - 1) {
+      } else if (distance > 5 && scrollRef.current < entryHolder.length - 1) {
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
@@ -83,7 +84,7 @@ export default function App() {
       }),
       grow: useSpring({
         from: { flexGrow: 0, maxHeight: 0 },
-        to: { flexGrow: 1, maxHeight: "maxContent" },
+        to: { flexGrow: 1 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       shrink: useSpring({
@@ -385,7 +386,7 @@ export default function App() {
           ]}
         />
         <Tab key="contact" type="contact" renderTitle="Contact" />
-      </div>  
+      </div>
       <Pagination />
     </>
   );
