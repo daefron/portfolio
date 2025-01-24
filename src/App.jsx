@@ -83,13 +83,13 @@ export default function App() {
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       grow: useSpring({
-        from: { flexGrow: 0, maxHeight: 0 },
+        from: { flexGrow: 0, height: 0 },
         to: { flexGrow: 1 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       shrink: useSpring({
         from: { flexGrow: 1 },
-        to: { flexGrow: 0, maxHeight: 0 },
+        to: { flexGrow: 0, height: 0 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       left: useSpring({
