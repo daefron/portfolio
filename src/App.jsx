@@ -73,13 +73,18 @@ export default function App() {
   function Tab({ type, renderTitle, subTitles }) {
     const animations = {
       growTab: useSpring({
-        from: { flexGrow: 0 },
-        to: { flexGrow: 1 },
+        from: { flexGrow: 0, flexShrink: 1 },
+        to: { flexGrow: 1, flexShrink: 0 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       shrinkTab: useSpring({
-        from: { flexGrow: 1 },
-        to: { flexGrow: 0 },
+        from: { flexGrow: 1, flexShrink: 0 },
+        to: { flexGrow: 0, flexShrink: 1 },
+        config: { duration: 600, easing: easings.easeInOutSine },
+      }),
+      stayShrunkTab: useSpring({
+        from: { flexGrow: 0, flexShrink: 1 },
+        to: { flexGrow: 0, flexShrink: 1 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       grow: useSpring({
@@ -90,6 +95,11 @@ export default function App() {
       shrink: useSpring({
         from: { flexGrow: 1 },
         to: { flexGrow: 0, height: 0 },
+        config: { duration: 600, easing: easings.easeInOutSine },
+      }),
+      stayShrunk: useSpring({
+        from: { flexGrow: 0, flexShrink: 1, height: 0 },
+        to: { flexGrow: 0, flexShrink: 1, height: 0 },
         config: { duration: 600, easing: easings.easeInOutSine },
       }),
       left: useSpring({
@@ -133,7 +143,7 @@ export default function App() {
               ? animations.growTab
               : lastSelectedEntry
               ? animations.shrinkTab
-              : null
+              : animations.stayShrunkTab
           }
         >
           <Title />
@@ -172,14 +182,10 @@ export default function App() {
                 ? animations.grow
                 : lastSelectedEntry
                 ? animations.shrink
-                : null
+                : animations.stayShrunk
             }
           >
-            {selectedEntry
-              ? thisEntry.content
-              : lastSelectedEntry
-              ? entryHolder[lastScroll.current].content
-              : null}
+            {thisEntry.content}
           </animated.div>
         );
       }
@@ -232,7 +238,7 @@ export default function App() {
                 ? animations.growTab
                 : subTitleIsLast
                 ? animations.shrinkTab
-                : null
+                : animations.stayShrunkTab
             }
           >
             <SubTitlesHead />
@@ -249,7 +255,7 @@ export default function App() {
                 ? animations.grow
                 : subTitleIsLast
                 ? animations.shrink
-                : null
+                : animations.stayShrunk
             }
           >
             {subTitleIsLast
