@@ -114,7 +114,7 @@ body {
 }
 .videoContent {
   padding-bottom: 5px;
-  height: 220px;
+  height: 180px;
 }
 @media (min-width: 320px) {
   .title {
@@ -126,6 +126,16 @@ body {
   p,
   a {
     font-size: 12px;
+  }
+}
+@media (min-width: 350px) {
+  .videoContent {
+    height: 190px;
+  }
+}
+@media (min-width: 400px) {
+  .videoContent {
+    height: 210px;
   }
 }
 @media (min-width: 450px) {
