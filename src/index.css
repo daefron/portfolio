@@ -224,3 +224,15 @@ body {
     font-size: 15px;
   }
 }
+@media (min-height: 810px) and (min-width:1000px) {
+  .title {
+    font-size: 20px;
+  }
+  .subTitle {
+    font-size: 18px;
+  }
+  p,
+  a {
+    font-size: 16px;
+  }
+}
