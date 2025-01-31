@@ -49,8 +49,7 @@ body {
 }
 .mainDiv {
   background-color: rgb(25, 25, 25);
-  padding-inline: 20px;
-  padding-top: 10px;
+  padding-inline: 10px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -91,7 +90,7 @@ body {
   justify-content: space-between;
   position: relative;
 }
-.subContentHolder .contentHolder > * {
+.subContentHolder .contentHolder {
   width: 100%;
 }
 .subTitleHolder {
@@ -105,16 +104,19 @@ body {
 .contentHolder {
   width: 100%;
   padding-top: 5px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-rows: max-content;
+  align-content: start;
 }
-.contentHolder > * {
+.contentHolder > p,
+.contentHolder > div {
   width: 100%;
   padding-block: 3px;
 }
-.videoContent {
+.contentMedia {
+  width: 100%;
   padding-bottom: 5px;
-  height: 180px;
+  object-fit: contain;
 }
 @media (min-width: 320px) {
   .title {
@@ -128,52 +130,15 @@ body {
     font-size: 12px;
   }
 }
-@media (min-width: 350px) {
-  .videoContent {
-    height: 190px;
-  }
-}
-@media (min-width: 400px) {
-  .videoContent {
-    height: 210px;
-  }
-}
-@media (min-width: 450px) {
-  .videoContent {
-    height: 230px;
-  }
-}
-@media (min-width: 500px) {
-  .videoContent {
-    height: 270px;
-  }
-}
 @media (min-width: 550px) {
-  .videoContent {
-    height: 290px;
+  .mainDiv {
+    padding-inline: 20px;
+    padding-top: 10px;
   }
 }
-@media (min-width: 600px) {
-  .videoContent {
-    height: 300px;
-  }
-}
-@media (min-width: 612px) {
+@media (min-width: 750px) {
   body {
-    width: 612px;
-  }
-}
-@media (min-width: 650px) {
-  .videoContent {
-    height: 305px;
-  }
-}
-@media (min-width: 1000px) {
-  body {
-    width: 1000px;
-  }
-  .videoContent {
-    height: 450px;
+    width: 750px;
   }
 }
 @media (min-height: 710px) {
@@ -224,7 +189,7 @@ body {
     font-size: 15px;
   }
 }
-@media (min-height: 810px) and (min-width:1000px) {
+@media (min-height: 860px) and (min-width: 1000px) {
   .title {
     font-size: 20px;
   }

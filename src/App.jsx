@@ -388,7 +388,8 @@ export default function App() {
           renderTitle="Projects"
           subTitles={[
             { type: "project1", renderTitle: "Run Tracker" },
-            { type: "project2", renderTitle: "Spreadsheet Creep" },
+            { type: "project2", renderTitle: "Thing Connector" },
+            { type: "project3", renderTitle: "Spreadsheet Creep" },
           ]}
         />
         <Tab key="contact" type="contact" renderTitle="Contact" />
