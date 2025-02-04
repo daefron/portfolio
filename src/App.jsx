@@ -1,6 +1,7 @@
 import { animated, useSpring, easings } from "@react-spring/web";
 import { useState, useEffect, useRef } from "react";
 import { content } from "./Content";
+import Background from "./background/App";
 export default function App() {
   const entryHolder = content();
   const [scrollPoint, setScrollPoint] = useState(0);
@@ -380,6 +381,7 @@ export default function App() {
   }
   return (
     <>
+      <Background />
       <div className="mainDiv">
         <Tab key="header" type="header" renderTitle="Thomas Evans" />
         <Tab
