@@ -1,23 +1,22 @@
 import { useState, useRef, useEffect } from "react";
-export default function Arrow({ startAngle }) {
+export default function Arrow({ startAngle, startSpeed, intervalTime }) {
   class Line {
     constructor() {
-      this.angle = 45 * Math.random();
-      this.change = changeValue(0.1);
-      this.gap = 0;
-
-      function changeValue(max) {
-        let value = max * Math.random();
-        let decider = Math.random();
-        if (decider > 0.5) {
-          value *= -1;
-        }
-        return value;
+      this.angle = startAngle;
+      this.change = startSpeed;
+      this.gap = 0.00004635446490955549;
+      if (startSpeed < 0) {
+        this.gap *= -1;
       }
     }
 
     changeDirection() {
-      let gapDiff = (Math.random() - 0.5) / 100000;
+      let gapDiff;
+      if (this.gap < 0) {
+        gapDiff = 1 / 10000;
+      } else {
+        gapDiff = -1 / 10000;
+      }
       let newGap = gapDiff + this.gap;
       let newChange = this.change + newGap;
       if (newChange > 0.1) {
@@ -30,13 +29,13 @@ export default function Arrow({ startAngle }) {
       }
       let newAngle = this.angle + newChange;
       if (newAngle < 0) {
-        newChange -= -0.002;
+        newChange -= -0.001;
         if (newGap < 0) {
           newGap -= newGap * 0.05;
         }
       }
-      if (newAngle > 45) {
-        newChange -= 0.002;
+      if (newAngle > 40) {
+        newChange -= 0.001;
         if (newGap > 0) {
           newGap -= newGap * 0.05;
         }
@@ -50,7 +49,7 @@ export default function Arrow({ startAngle }) {
     intervals() {
       setInterval(() => {
         this.changeDirection();
-      }, 30);
+      }, intervalTime);
     }
   }
   const line = useRef(new Line());
@@ -61,7 +60,7 @@ export default function Arrow({ startAngle }) {
   }, []);
 
   let changeRatio = line.current.change;
-  const backgroundColor = "RGBA(255,255,255," + (1 - changeRatio / 0.13) + ")";
+  const backgroundColor = "RGBA(255,255,255," + (changeRatio / 0.1 + 0.5) + ")";
   function Pointer({ angle }) {
     return (
       <div
