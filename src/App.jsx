@@ -36,15 +36,20 @@ export default function App() {
             scrollDelay.current = true;
             if (distance < 0 && scrollRef.current > 0) {
               lastScroll.current = scrollRef.current;
+              backgroundSpeed.current = -4;
+
               setScrollPoint((previous) => previous - 1);
             } else if (
               distance > 0 &&
               scrollRef.current < entryHolder.length - 1
             ) {
               lastScroll.current = scrollRef.current;
+
+              backgroundSpeed.current = 4;
               setScrollPoint((previous) => previous + 1);
             }
             setTimeout(() => {
+              backgroundSpeed.current /= 4;
               scrollDelay.current = false;
             }, 800);
           }
@@ -170,6 +175,14 @@ export default function App() {
               }
             }}
             onClick={() => {
+              if (thisEntry.scrollId < scrollRef.current) {
+                backgroundSpeed.current = 4;
+              } else {
+                backgroundSpeed.current = -4;
+              }
+              setTimeout(() => {
+                backgroundSpeed.current /= 4;
+              }, 800);
               lastScroll.current = scrollRef.current;
               setScrollPoint(thisEntry.scrollId);
             }}
@@ -284,6 +297,17 @@ export default function App() {
               <p
                 className={!subTitleIsCurrent ? "title inactiveTitle" : "title"}
                 onClick={() => {
+                  if (
+                    entryHolder.find((entry) => entry.type === type).scrollId <
+                    scrollRef.current
+                  ) {
+                    backgroundSpeed.current = 4;
+                  } else {
+                    backgroundSpeed.current = -4;
+                  }
+                  setTimeout(() => {
+                    backgroundSpeed.current /= 4;
+                  }, 800);
                   lastScroll.current = scrollRef.current;
                   setScrollPoint(
                     entryHolder.find((entry) => entry.type === type).scrollId
@@ -331,6 +355,14 @@ export default function App() {
                   gridRow: index + 1 + " / " + (index + 2),
                 }}
                 onClick={() => {
+                  if (subTitle.scrollId < scrollRef.current) {
+                    backgroundSpeed.current = 4;
+                  } else {
+                    backgroundSpeed.current = -4;
+                  }
+                  setTimeout(() => {
+                    backgroundSpeed.current /= 4;
+                  }, 800);
                   lastScroll.current = scrollRef.current;
                   setScrollPoint(subTitle.scrollId);
                 }}
