@@ -36,7 +36,7 @@ export default function App() {
             scrollDelay.current = true;
             if (distance < 0 && scrollRef.current > 0) {
               lastScroll.current = scrollRef.current;
-              backgroundSpeed.current = -4;
+              backgroundSpeed.current = 4;
 
               setScrollPoint((previous) => previous - 1);
             } else if (
@@ -45,7 +45,7 @@ export default function App() {
             ) {
               lastScroll.current = scrollRef.current;
 
-              backgroundSpeed.current = 4;
+              backgroundSpeed.current = -4;
               setScrollPoint((previous) => previous + 1);
             }
             setTimeout(() => {
@@ -65,11 +65,11 @@ export default function App() {
       scrollDelay.current = true;
       const distance = event.deltaY;
       if (distance < -5 && scrollRef.current > 0) {
-        backgroundSpeed.current = -4;
+        backgroundSpeed.current = 4;
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
       } else if (distance > 5 && scrollRef.current < entryHolder.length - 1) {
-        backgroundSpeed.current = 4;
+        backgroundSpeed.current = -4;
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
