@@ -9,7 +9,8 @@ export default function SingleLine({ startAngle, startSpeed, speedMult }) {
     changeDirection() {
       const mult = speedMult.current;
       if (mult) {
-        if (this.angle>40 && this.angle < 40.1) {}
+        if (this.angle > 40 && this.angle < 40.1) {
+        }
         let neutralMult = mult;
         if (neutralMult < 0) {
           neutralMult *= -1;
@@ -48,7 +49,7 @@ export default function SingleLine({ startAngle, startSpeed, speedMult }) {
   }, []);
 
   let changeRatio = line.current.change;
-  const backgroundColor = "RGBA(255,255,255," + (1 - changeRatio / 0.11) + ")";
+  const backgroundColor = "RGBA(220,220,220," + (1 - changeRatio / 0.11) + ")";
   function Pointer({ angle }) {
     return (
       <div
@@ -57,7 +58,7 @@ export default function SingleLine({ startAngle, startSpeed, speedMult }) {
           width: "1px",
           backgroundColor: backgroundColor,
           height: 3000,
-          transform: "rotate(" + (line.current.angle + angle) + "deg)",
+          transform: "rotate(" + (lineAngle+ angle) + "deg)",
           position: "fixed",
         }}
       ></div>

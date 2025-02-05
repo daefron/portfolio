@@ -9,7 +9,7 @@ export default function App() {
   const lastScroll = useRef();
   scrollRef.current = scrollPoint;
   const scrollDelay = useRef(false);
-  const backgroundSpeed = useRef(0);
+  const backgroundSpeed = useRef(-1);
 
   useEffect(() => {
     const scrollEvent = addEventListener("wheel", (e) => scroll(e));
@@ -37,7 +37,9 @@ export default function App() {
             if (distance < 0 && scrollRef.current > 0) {
               lastScroll.current = scrollRef.current;
               backgroundSpeed.current = 4;
-
+              setTimeout(() => {
+                backgroundSpeed.current /= 4;
+              }, 600);
               setScrollPoint((previous) => previous - 1);
             } else if (
               distance > 0 &&
@@ -46,10 +48,12 @@ export default function App() {
               lastScroll.current = scrollRef.current;
 
               backgroundSpeed.current = -4;
+              setTimeout(() => {
+                backgroundSpeed.current /= 4;
+              }, 600);
               setScrollPoint((previous) => previous + 1);
             }
             setTimeout(() => {
-              backgroundSpeed.current /= 4;
               scrollDelay.current = false;
             }, 800);
           }
@@ -66,15 +70,20 @@ export default function App() {
       const distance = event.deltaY;
       if (distance < -5 && scrollRef.current > 0) {
         backgroundSpeed.current = 4;
+        setTimeout(() => {
+          backgroundSpeed.current /= 4;
+        }, 600);
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
       } else if (distance > 5 && scrollRef.current < entryHolder.length - 1) {
         backgroundSpeed.current = -4;
+        setTimeout(() => {
+          backgroundSpeed.current /= 4;
+        }, 600);
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
       setTimeout(() => {
-        backgroundSpeed.current /= 4;
         scrollDelay.current = false;
       }, 800);
     }
@@ -182,7 +191,7 @@ export default function App() {
               }
               setTimeout(() => {
                 backgroundSpeed.current /= 4;
-              }, 800);
+              }, 600);
               lastScroll.current = scrollRef.current;
               setScrollPoint(thisEntry.scrollId);
             }}
@@ -307,7 +316,7 @@ export default function App() {
                   }
                   setTimeout(() => {
                     backgroundSpeed.current /= 4;
-                  }, 800);
+                  }, 600);
                   lastScroll.current = scrollRef.current;
                   setScrollPoint(
                     entryHolder.find((entry) => entry.type === type).scrollId
@@ -362,7 +371,7 @@ export default function App() {
                   }
                   setTimeout(() => {
                     backgroundSpeed.current /= 4;
-                  }, 800);
+                  }, 600);
                   lastScroll.current = scrollRef.current;
                   setScrollPoint(subTitle.scrollId);
                 }}
