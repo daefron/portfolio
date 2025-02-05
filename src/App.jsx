@@ -1,7 +1,7 @@
 import { animated, useSpring, easings } from "@react-spring/web";
 import { useState, useEffect, useRef } from "react";
 import { content } from "./Content";
-import Background from "./background/App";
+import Background from "./background/LineGroup";
 export default function App() {
   const entryHolder = content();
   const [scrollPoint, setScrollPoint] = useState(0);
@@ -9,6 +9,7 @@ export default function App() {
   const lastScroll = useRef();
   scrollRef.current = scrollPoint;
   const scrollDelay = useRef(false);
+  const backgroundSpeed = useRef(0);
 
   useEffect(() => {
     const scrollEvent = addEventListener("wheel", (e) => scroll(e));
@@ -59,13 +60,16 @@ export default function App() {
       scrollDelay.current = true;
       const distance = event.deltaY;
       if (distance < -5 && scrollRef.current > 0) {
+        backgroundSpeed.current = -4;
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous - 1);
       } else if (distance > 5 && scrollRef.current < entryHolder.length - 1) {
+        backgroundSpeed.current = 4;
         lastScroll.current = scrollRef.current;
         setScrollPoint((previous) => previous + 1);
       }
       setTimeout(() => {
+        backgroundSpeed.current /= 4;
         scrollDelay.current = false;
       }, 800);
     }
@@ -381,7 +385,7 @@ export default function App() {
   }
   return (
     <>
-      <Background />
+      <Background speedMult={backgroundSpeed} />
       <div className="mainDiv">
         <Tab key="header" type="header" renderTitle="Thomas Evans" />
         <Tab
