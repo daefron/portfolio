@@ -1,426 +1,243 @@
-import { animated, useSpring, easings } from "@react-spring/web";
-import { useState, useEffect, useRef } from "react";
-import { content } from "./Content";
+import { useEffect, useRef } from "react";
 import Background from "./background/LineGroup";
+import runVideo from "./videos/runVid.mp4";
+import thingConnectorImage from "./images/thingConnectorImage.png";
+import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
+import blank from "./images/blank.png";
 export default function App() {
-  const entryHolder = content();
-  const [scrollPoint, setScrollPoint] = useState(0);
-  const scrollRef = useRef();
-  const lastScroll = useRef();
-  scrollRef.current = scrollPoint;
-  const scrollDelay = useRef(false);
   const backgroundSpeed = useRef(1);
-
+  const lastScroll = useRef(0);
   useEffect(() => {
-    const scrollEvent = addEventListener("wheel", (e) => scroll(e));
-    const touchEndEvent = addEventListener("touchend", touchEnd);
-    const touchMoveEvent = addEventListener("touchmove", (e) => touchMove(e));
-    let lastTouch;
-    function touchEnd() {
-      removeEventListener("touchend", touchEndEvent);
-      removeEventListener("touchmove", touchMoveEvent);
-      lastTouch = undefined;
-    }
-    function touchMove(event) {
-      const touch = event.touches[0];
-      if (lastTouch) {
-        const yDistance = lastTouch.clientY - touch.clientY;
-        if (yDistance > 10 || yDistance < -10) {
-          touchScroll(yDistance);
-          touchEnd();
-          return;
-          function touchScroll(distance) {
-            if (scrollDelay.current) {
-              return;
-            }
-            scrollDelay.current = true;
-            if (distance < 0 && scrollRef.current > 0) {
-              lastScroll.current = scrollRef.current;
-              backgroundSpeed.current = 4;
-              setTimeout(() => {
-                backgroundSpeed.current /= 4;
-              }, 600);
-              setScrollPoint((previous) => previous - 1);
-            } else if (
-              distance > 0 &&
-              scrollRef.current < entryHolder.length - 1
-            ) {
-              lastScroll.current = scrollRef.current;
-
-              backgroundSpeed.current = -4;
-              setTimeout(() => {
-                backgroundSpeed.current /= 4;
-              }, 600);
-              setScrollPoint((previous) => previous + 1);
-            }
-            setTimeout(() => {
-              scrollDelay.current = false;
-            }, 800);
-          }
-        }
-      }
-      lastTouch = touch;
-    }
+    const scrollEvent = addEventListener("scroll", (e) => scroll(e));
     function scroll(event) {
-      if (scrollDelay.current) {
-        return;
-      }
-      removeEventListener("wheel", scrollEvent);
-      scrollDelay.current = true;
-      const distance = event.deltaY;
-      if (distance < -5 && scrollRef.current > 0) {
-        backgroundSpeed.current = 4;
+      removeEventListener("scroll", scrollEvent);
+      const originalPosition = window.scrollY;
+      const distance = originalPosition - lastScroll.current;
+      function friction() {
         setTimeout(() => {
-          backgroundSpeed.current /= 4;
-        }, 600);
-        lastScroll.current = scrollRef.current;
-        setScrollPoint((previous) => previous - 1);
-      } else if (distance > 5 && scrollRef.current < entryHolder.length - 1) {
-        backgroundSpeed.current = -4;
-        setTimeout(() => {
-          backgroundSpeed.current /= 4;
-        }, 600);
-        lastScroll.current = scrollRef.current;
-        setScrollPoint((previous) => previous + 1);
+          if (lastScroll.current === originalPosition) {
+            if (backgroundSpeed.current > 1.5 || backgroundSpeed.current < -1.5) {
+              backgroundSpeed.current *= 0.8;
+              friction();
+            }
+          }
+        }, 500);
       }
-      setTimeout(() => {
-        scrollDelay.current = false;
-      }, 800);
+      friction();
+      lastScroll.current = originalPosition;
+      backgroundSpeed.current = distance;
     }
   }, []);
-
-  function Tab({ type, renderTitle, subTitles }) {
-    const animations = {
-      growTab: useSpring({
-        from: { flexGrow: 0, flexShrink: 1 },
-        to: { flexGrow: 1, flexShrink: 0 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      shrinkTab: useSpring({
-        from: { flexGrow: 1, flexShrink: 0 },
-        to: { flexGrow: 0, flexShrink: 1 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      stayShrunkTab: useSpring({
-        from: { flexGrow: 0, flexShrink: 1 },
-        to: { flexGrow: 0, flexShrink: 1 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      grow: useSpring({
-        from: { flexGrow: 0, height: 0 },
-        to: { flexGrow: 1 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      shrink: useSpring({
-        from: { flexGrow: 1 },
-        to: { flexGrow: 0, height: 0 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      stayShrunk: useSpring({
-        from: { flexGrow: 0, flexShrink: 1, height: 0 },
-        to: { flexGrow: 0, flexShrink: 1, height: 0 },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      left: useSpring({
-        from: { flexGrow: 1, marginLeft: "0px", right: "0%" },
-        to: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-      right: useSpring({
-        from: { flexGrow: 1, marginLeft: "-30px", right: "100%" },
-        to: { flexGrow: 1, marginLeft: "0px", right: "0%" },
-        config: { duration: 600, easing: easings.easeInOutSine },
-      }),
-    };
-
-    let lastEntry;
-    const currentEntry = entryHolder[scrollPoint];
-    const thisEntry = entryHolder.find((entry) => entry.type === type);
-    if (lastScroll.current !== undefined) {
-      lastEntry = entryHolder[lastScroll.current];
-    }
-
-    if (!subTitles) {
-      return standardRender();
-    }
-    if (subTitles) {
-      return subTitleRender();
-    }
-
-    function standardRender() {
-      let selectedEntry, lastSelectedEntry;
-      if (currentEntry === thisEntry) {
-        selectedEntry = true;
-      } else if (lastEntry === thisEntry) {
-        lastSelectedEntry = true;
-      }
-      return (
-        <animated.div
-          className={type === "header" ? "tab header" : "tab"}
-          style={
-            selectedEntry
-              ? animations.growTab
-              : lastSelectedEntry
-              ? animations.shrinkTab
-              : animations.stayShrunkTab
-          }
-        >
-          <Title />
-          <Content />
-        </animated.div>
-      );
-      function Title() {
-        return (
-          <p
-            className={!selectedEntry ? "title inactiveTitle" : "title"}
-            onMouseOver={(e) => {
-              if (e.target.className.includes("inactive")) {
-                e.target.style.color = "rgb(190, 190, 190)";
-              }
-            }}
-            onMouseOut={(e) => {
-              if (e.target.className.includes("inactive")) {
-                e.target.style.color = "rgb(150, 150, 150)";
-              }
-            }}
-            onClick={() => {
-              if (thisEntry.scrollId < scrollRef.current) {
-                backgroundSpeed.current = 4;
-              } else {
-                backgroundSpeed.current = -4;
-              }
-              setTimeout(() => {
-                backgroundSpeed.current /= 4;
-              }, 600);
-              lastScroll.current = scrollRef.current;
-              setScrollPoint(thisEntry.scrollId);
-            }}
-          >
-            {renderTitle}
-          </p>
-        );
-      }
-      function Content() {
-        return (
-          <animated.div
-            className="contentHolder"
-            style={
-              selectedEntry
-                ? animations.grow
-                : lastSelectedEntry
-                ? animations.shrink
-                : animations.stayShrunk
-            }
-          >
-            {thisEntry.content}
-          </animated.div>
-        );
-      }
-    }
-    function subTitleRender() {
-      let subTitleIsCurrent, subTitleIsLast;
-      subTitles.forEach((subTitle) => {
-        const thisEntry = entryHolder.find(
-          (entry) => entry.type === subTitle.type
-        );
-        if (thisEntry === currentEntry) {
-          subTitleIsCurrent = thisEntry;
-        } else if (lastEntry && thisEntry === lastEntry) {
-          subTitleIsLast = thisEntry;
-        }
-      });
-      if (subTitleIsCurrent && subTitleIsLast) {
-        return HorizontalScroll();
-      }
-      return VerticalScroll();
-      function HorizontalScroll() {
-        const lastScrollDirection = scrollPoint + 1 === subTitleIsLast.scrollId;
-        return (
-          <div className="tab" style={{ flexGrow: 1 }}>
-            <SubTitlesHead />
-            <animated.div
-              className="subContentHolder"
-              style={lastScrollDirection ? animations.right : animations.left}
-            >
-              <div className="contentHolder">
-                {lastScrollDirection
-                  ? subTitleIsCurrent.content
-                  : subTitleIsLast.content}
-              </div>
-              <div className="contentHolder">
-                {!lastScrollDirection
-                  ? subTitleIsCurrent.content
-                  : subTitleIsLast.content}
-              </div>
-            </animated.div>
-          </div>
-        );
-      }
-      function VerticalScroll() {
-        return (
-          <animated.div
-            className="tab"
-            style={
-              subTitleIsCurrent
-                ? animations.growTab
-                : subTitleIsLast
-                ? animations.shrinkTab
-                : animations.stayShrunkTab
-            }
-          >
-            <SubTitlesHead />
-            <Content />
-          </animated.div>
-        );
-      }
-      function Content() {
-        return (
-          <animated.div
-            className="contentHolder"
-            style={
-              subTitleIsCurrent
-                ? animations.grow
-                : subTitleIsLast
-                ? animations.shrink
-                : animations.stayShrunk
-            }
-          >
-            {subTitleIsLast
-              ? subTitleIsLast.content
-              : subTitleIsCurrent
-              ? subTitleIsCurrent.content
-              : null}
-          </animated.div>
-        );
-      }
-      function SubTitlesHead() {
-        function SubTitleTitle() {
-          return (
-            <div
-              style={{
-                gridColumn: "1/2",
-                gridRow: "1/2",
-                display: "flex",
-              }}
-            >
-              <p
-                className={!subTitleIsCurrent ? "title inactiveTitle" : "title"}
-                onClick={() => {
-                  if (
-                    entryHolder.find((entry) => entry.type === type).scrollId <
-                    scrollRef.current
-                  ) {
-                    backgroundSpeed.current = 4;
-                  } else {
-                    backgroundSpeed.current = -4;
-                  }
-                  setTimeout(() => {
-                    backgroundSpeed.current /= 4;
-                  }, 600);
-                  lastScroll.current = scrollRef.current;
-                  setScrollPoint(
-                    entryHolder.find((entry) => entry.type === type).scrollId
-                  );
-                }}
-                onMouseOver={(e) => {
-                  if (e.target.className.includes("inactive")) {
-                    e.target.style.color = "rgb(190, 190, 190)";
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (e.target.className.includes("inactive")) {
-                    e.target.style.color = "rgb(150, 150, 150)";
-                  }
-                }}
-              >
-                {renderTitle} -
-              </p>
-            </div>
-          );
-        }
-        function SubTitleList() {
-          let holder = [];
-          subTitles.forEach((subTitle, i) => {
-            const thisEntry = entryHolder.find(
-              (entry) => entry.type === subTitle.type
-            );
-            holder.push(
-              <SubTitleContent
-                key={subTitle.type + "key"}
-                subTitle={thisEntry}
-                renderTitle={subTitle.renderTitle}
-                index={i}
-              />
-            );
-          });
-          function SubTitleContent({ subTitle, index, renderTitle }) {
-            return (
-              <p
-                className={
-                  currentEntry !== subTitle ? "title inactiveTitle" : "title"
-                }
-                style={{
-                  gridColumn: "2 / 3",
-                  gridRow: index + 1 + " / " + (index + 2),
-                }}
-                onClick={() => {
-                  if (subTitle.scrollId < scrollRef.current) {
-                    backgroundSpeed.current = 4;
-                  } else {
-                    backgroundSpeed.current = -4;
-                  }
-                  setTimeout(() => {
-                    backgroundSpeed.current /= 4;
-                  }, 600);
-                  lastScroll.current = scrollRef.current;
-                  setScrollPoint(subTitle.scrollId);
-                }}
-                onMouseOver={(e) => {
-                  if (e.target.className.includes("inactive")) {
-                    e.target.style.color = "rgb(190, 190, 190)";
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (e.target.className.includes("inactive")) {
-                    e.target.style.color = "rgb(150, 150, 150)";
-                  }
-                }}
-              >
-                {renderTitle}
-              </p>
-            );
-          }
-          return holder;
-        }
-        return (
-          <div className="subTitleHolder">
-            <SubTitleTitle />
-            <SubTitleList />
-          </div>
-        );
-      }
-    }
+  function Header() {
+    return (
+      <div className="contentHolder">
+        <p className="title">Thomas Evans</p>
+        <p>
+          I am a self-taught full-stack developer with a non-linear path into
+          programming.
+        </p>
+        <p>
+          Before transitioning into development, I spent nearly a decade working
+          in sales, never really finding passion in the work.
+        </p>
+        <p>
+          I worked through&nbsp;
+          <a target="_blank" href="https://www.theodinproject.com/">
+            The Odin Project
+          </a>
+          , and am now making cool things.
+        </p>
+        <p className="subTitle">Skills:</p>
+        <p>
+          At this point, I feel highly confident in my understanding of
+          front-end (<b>HTML</b>,<b> CSS</b>,<b> JavaScript</b>,<b> React</b>)
+          and back-end (<b>Node.js</b>, <b>Express</b>,<b> SQL</b>) development.
+        </p>
+      </div>
+    );
   }
-  function Pagination() {
-    const maxScrolls = content().length;
-    let points = [];
-    for (let i = 0; i < maxScrolls; i++) {
-      if (i === scrollPoint) {
-        points.push(true);
-      } else {
-        points.push(false);
-      }
+  function Projects() {
+    function Project1() {
+      return (
+        <div className="project projectLine">
+          <p className="subTitle">Run Tracker - </p>
+          <video className="contentMedia" poster={blank} autoPlay muted loop>
+            <source src={runVideo} type="video/mp4"></source>
+          </video>
+          <p>
+            A dashboard and API that use data collected from the Fitbit API to
+            better visualise my progress in running.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://react.dev/">
+              React
+            </a>
+            <a target="_blank" href="https://expressjs.com/">
+              Express
+            </a>
+            <a target="_blank" href="https://recharts.org/">
+              PostgreSQL
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://runtracker.netlify.app">
+              Live site
+            </a>
+            <a target="_blank" href="https://github.com/daefron/run-tracker">
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function Project2() {
+      return (
+        <div className="project projectLine">
+          <p className="subTitle">Thing Connector - </p>
+          <img src={thingConnectorImage} className="contentMedia"></img>
+          <p>
+            This tool compares words, finds connections between them, and ranks
+            their relationships using the Gemini 1.5 Flash API.
+          </p>
+          <p>
+            I like writing jokes, and I wanted to see the way an AI model thinks
+            when making connections between things.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://react.dev/">
+              React
+            </a>
+            <a target="_blank" href="https://expressjs.com/">
+              Express
+            </a>
+            <a
+              target="_blank"
+              href="https://ai.google.dev/gemini-api/docs/models/gemini#gemini-1.5-flash"
+            >
+              Gemini 1.5 Flash
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://thingconnector.netlify.app">
+              Live site
+            </a>
+            <a
+              target="_blank"
+              href="https://github.com/daefron/thing-connector"
+            >
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function Project3() {
+      return (
+        <div className="project projectLine">
+          <p className="subTitle">Spreadsheet Creep - </p>
+          <video className="contentMedia" poster={blank} autoPlay muted loop>
+            <source src={spreadsheetVideo} type="video/mp4"></source>
+          </video>
+          <p>A tower defense game set in a spreadsheet.</p>
+          <p>
+            While it's more of an engine than a fully playable game at this
+            stage, it is functional and a ridiculous thing to have built in
+            React.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://react.dev/">
+              React
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://spreadsheetcreep.netlify.app">
+              Live site
+            </a>
+            <a
+              target="_blank"
+              href="https://github.com/daefron/spreadsheet-creep"
+            >
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function Project4() {
+      return (
+        <div className="project">
+          <p className="subTitle">
+            And that animation you can see in the background -
+          </p>
+          <Background
+            className="contentMedia"
+            speedMult={backgroundSpeed}
+            position={"project"}
+          />
+          <p>This is a weird one.</p>
+          <p>
+            This initially started out as an algorithm for a wind generator mod
+            in the videogame Beam.NG In messing around with visualising it, I
+            went down a rabbit-hole and eventually ended up with a very
+            tweakable, dynamic "3D" animation using pure Javascript and CSS.
+          </p>
+        </div>
+      );
     }
     return (
-      <div className="pagination">
-        {points.map((point, i) => {
-          return (
-            <div
-              key={i + "pagePoint"}
-              className={point ? "pagePoint activePagePoint" : "pagePoint"}
-            ></div>
-          );
-        })}
+      <div className="contentHolder">
+        <p className="title">Projects</p>
+        <Project1 />
+        <Project2 />
+        <Project3 />
+        <Project4 />
+      </div>
+    );
+  }
+  function Footer() {
+    return (
+      <div className="contentHolder footer">
+        <p className="title">Contact</p>
+        <div key="contact-1" style={{ display: "flex" }}>
+          <p className="subTitle">Email: &nbsp;</p>
+          <p className="subTitle">thomas_evans@outlook.com</p>
+        </div>
+        <div key="contact-2" style={{ display: "flex" }}>
+          <p className="subTitle">GitHub: &nbsp;</p>
+          <a
+            className="subTitle"
+            target="_blank"
+            href="https://github.com/daefron"
+          >
+            daefron
+          </a>
+        </div>
       </div>
     );
   }
@@ -428,20 +245,10 @@ export default function App() {
     <>
       <Background speedMult={backgroundSpeed} />
       <div className="mainDiv">
-        <Tab key="header" type="header" renderTitle="Thomas Evans" />
-        <Tab
-          key="projects"
-          type="project1"
-          renderTitle="Projects"
-          subTitles={[
-            { type: "project1", renderTitle: "Run Tracker" },
-            { type: "project2", renderTitle: "Thing Connector" },
-            { type: "project3", renderTitle: "Spreadsheet Creep" },
-          ]}
-        />
-        <Tab key="contact" type="contact" renderTitle="Contact" />
+        <Header />
+        <Projects />
+        <Footer />
       </div>
-      <Pagination />
     </>
   );
 }

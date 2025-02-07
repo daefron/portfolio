@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-export default function App({ speedMult }) {
+export default function App({ speedMult, position }) {
   const speed = 0.1;
   const margin = 205;
   const amountOfLines = 7;
@@ -32,7 +32,7 @@ export default function App({ speedMult }) {
       } else {
         if (this.speed > 0) {
           this.speed = speed;
-        } else {
+        } else {  
           this.speed = -speed;
         }
       }
@@ -50,6 +50,11 @@ export default function App({ speedMult }) {
       lines.current.forEach((line) => line.updateDirection());
     }
     setInterval(() => {
+      if (speedMult.current > 4) {
+        speedMult.current = 4;
+      } else if (speedMult.current < -4) {
+        speedMult.current = -4;
+      }
       lines.current.forEach((line) => {
         line.updateDirection();
       });
@@ -89,20 +94,70 @@ export default function App({ speedMult }) {
       </div>
     );
   }
-  return (
-    <div
-      className="backgroundHolder"
-      style={{
-        height: "100%",
-        top: "19%",
-        left: "20%",
-        zIndex: "-50",
-        position: "fixed",
-      }}
-    >
-      {lines.current.map((line, i) => {
-        return <NewLine key={i + "newLine"} line={line} />;
-      })}
-    </div>
-  );
+  function ProjectLine({ line }) {
+    const backgroundColor =
+      "RGBA(" +
+      (line.angle / maxAngle) * 150 +
+      "," +
+      (2 + line.angle / maxAngle) * 111 +
+      "," +
+      (line.angle / maxAngle) * 140 +
+      "," +
+      (1 - line.speed / (speed * 0.33)) +
+      ")";
+    function Pointer({ angle }) {
+      return (
+        <div
+          className="pointer"
+          style={{
+            position: "absolute",
+            width: "2px",
+            backgroundColor: backgroundColor,
+            marginTop: "max(-20vw, -180px)",
+            height:"min(85vw, 670px)",
+            transform: "rotate(" + (line.angle + angle) + "deg)",
+          }}
+        ></div>
+      );
+    }
+    return (
+      <div
+        className="pointerHolder"
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pointer angle={68} />
+      </div>
+    );
+  }
+  if (position) {
+    return (
+      <div className="backgroundHolder" style={{ height: "min(45vw, 320px)" }}>
+        {lines.current.map((line, i) => {
+          return <ProjectLine key={i + "newLine"} line={line} />;
+        })}
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className="backgroundHolder"
+        style={{
+          height: "100%",
+          width:"100%",
+          top: "19%",
+          left: "20%",
+          zIndex: "-50",
+          position: "fixed",
+        }}
+      >
+        {lines.current.map((line, i) => {
+          return <NewLine key={i + "newLine"} line={line} />;
+        })}
+      </div>
+    );
+  }
 }
