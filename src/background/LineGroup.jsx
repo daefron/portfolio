@@ -146,10 +146,8 @@ export default function App({ speedMult, position }) {
       <div
         className="backgroundHolder"
         style={{
-          height: "100%",
-          width:"100%",
-          top: "19%",
-          left: "20%",
+          top: "19lvh",
+          left: "20vw",
           zIndex: "-50",
           position: "fixed",
         }}
