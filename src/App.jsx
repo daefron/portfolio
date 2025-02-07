@@ -60,7 +60,7 @@ export default function App() {
     function Project1() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Run Tracker - </p>
+          <p className="subTitle">Run Tracker</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
           </video>
@@ -105,7 +105,7 @@ export default function App() {
     function Project2() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Thing Connector - </p>
+          <p className="subTitle">Thing Connector</p>
           <img src={thingConnectorImage} className="contentMedia"></img>
           <p>
             This tool compares words, finds connections between them, and ranks
@@ -153,7 +153,7 @@ export default function App() {
     function Project3() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Spreadsheet Creep - </p>
+          <p className="subTitle">Spreadsheet Creep</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={spreadsheetVideo} type="video/mp4"></source>
           </video>
@@ -193,7 +193,7 @@ export default function App() {
       return (
         <div className="project">
           <p className="subTitle">
-            And that animation you can see in the background -
+            And that animation you can see in the background
           </p>
           <Background
             className="contentMedia"
