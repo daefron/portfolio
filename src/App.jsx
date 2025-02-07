@@ -9,7 +9,7 @@ export default function App() {
   const lastScroll = useRef();
   scrollRef.current = scrollPoint;
   const scrollDelay = useRef(false);
-  const backgroundSpeed = useRef(-1);
+  const backgroundSpeed = useRef(1);
 
   useEffect(() => {
     const scrollEvent = addEventListener("wheel", (e) => scroll(e));
