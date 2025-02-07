@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 export default function App({ speedMult }) {
   const speed = 0.1;
-  const margin = 50;
-  const amountOfLines = 8;
+  const margin = 205;
+  const amountOfLines = 7;
   const minAngle = 0;
   const maxAngle = 45;
   const lineSpacing =
-    ((maxAngle - minAngle) * 2 + 20 * (speed * 10)) / amountOfLines;
+    ((maxAngle - minAngle) * 2 + 80 * (speed * 10)) / amountOfLines;
   const lines = useRef([]);
   class Line {
     constructor(angle, speed) {
@@ -21,14 +21,14 @@ export default function App({ speedMult }) {
       }
       if (
         this.angle <= minAngle + margin * speed &&
-        this.speed + (speed / 100) * mult < speed * neutralMult
+        this.speed + (speed / 400) * mult < speed * neutralMult
       ) {
-        this.speed += (speed / 100) * mult;
+        this.speed += (speed / 400) * mult;
       } else if (
         this.angle >= maxAngle - margin * speed &&
-        this.speed - (speed / 100) * mult > -speed * neutralMult
+        this.speed - (speed / 400) * mult > -speed * neutralMult
       ) {
-        this.speed -= (speed / 100) * mult;
+        this.speed -= (speed / 400) * mult;
       } else {
         if (this.speed > 0) {
           this.speed = speed;
@@ -59,7 +59,7 @@ export default function App({ speedMult }) {
 
   function NewLine({ line }) {
     const backgroundColor =
-      "RGBA(220,220,220," + (1 - line.speed / (speed * 1.1) ) + ")";
+      "RGBA(222,222,222," + (1 - line.speed / (speed * 0.33)) + ")";
     function Pointer({ angle }) {
       return (
         <div
@@ -67,7 +67,7 @@ export default function App({ speedMult }) {
           style={{
             width: "1px",
             backgroundColor: backgroundColor,
-            height: 3000,
+            height: 5000,
             transform: "rotate(" + (line.angle + angle) + "deg)",
             position: "fixed",
           }}
