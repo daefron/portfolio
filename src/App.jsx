@@ -71,9 +71,14 @@ export default function App() {
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
           </video>
+          <p>So my girlfriend got me a Fitbit for my birthday...</p>
           <p>
-            A dashboard and API that use data collected from the Fitbit API to
-            better visualise my progress in running.
+            This is a dashboard and API that use data collected from the Fitbit
+            API to better visualise my progress in running.
+          </p>
+          <p>
+            Needless to say, I wasn't very impressed with Fitbit's official
+            exercise displays.
           </p>
           <p className="subTitle">Built with:</p>
           <div
@@ -115,12 +120,17 @@ export default function App() {
           <p className="subTitle">Thing Connector</p>
           <img src={thingConnectorImage} className="contentMedia"></img>
           <p>
+            I like writing jokes, and I wanted to see the way an AI model thinks
+            when making connections between things.
+          </p>
+          <p>
             This tool compares words, finds connections between them, and ranks
             their relationships using the Gemini 1.5 Flash API.
           </p>
           <p>
-            I like writing jokes, and I wanted to see the way an AI model thinks
-            when making connections between things.
+            About the only use case for this is as a tool for creative writing,
+            and while most of the connections it makes are mundane, it can
+            output some <i>interesting</i> insights.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -166,6 +176,11 @@ export default function App() {
           </video>
           <p>A tower defense game set in a spreadsheet.</p>
           <p>
+            Made to look and feel as if played in a spreadsheet, it allows for
+            automatic battles between entities, in dynamic, randomly generated
+            levels.
+          </p>
+          <p>
             While it's more of an engine than a fully playable game at this
             stage, it is functional and a ridiculous thing to have built in
             React.
@@ -209,11 +224,16 @@ export default function App() {
           />
           <p>This is a weird one.</p>
           <p>
-            This initially started out as an algorithm for a wind generator mod
-            in the videogame Beam.NG In messing around with visualising it, I
-            went down a rabbit-hole and eventually ended up with a very
-            tweakable, dynamic "3D" animation using pure Javascript and CSS.
+            What initially started out as an algorithm for a wind generation mod
+            in the videogame Beam.NG (coming soon) turned into a very tweakable, dynamic "3D"
+            animation using purely JavaScript and CSS in React.
           </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://react.dev/">
+              React
+            </a>
+          </div>
         </div>
       );
     }
