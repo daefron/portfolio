@@ -267,7 +267,6 @@ export default function App() {
                 name="speed"
                 min={-10}
                 max={10}
-                step="any"
                 defaultValue={speed.current}
                 onChange={(e) => {
                   speed.current = Number(e.target.value);
@@ -282,7 +281,6 @@ export default function App() {
                 name="minAngle"
                 min={0}
                 max={maxAngleState}
-                step="any"
                 defaultValue={minAngle.current}
                 onChange={(e) => {
                   minAngle.current = Number(e.target.value);
@@ -297,7 +295,6 @@ export default function App() {
                 name="maxAngle"
                 min={minAngleState}
                 max={60}
-                step="any"
                 defaultValue={maxAngle.current}
                 onChange={(e) => {
                   maxAngle.current = Number(e.target.value);
