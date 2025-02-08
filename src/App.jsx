@@ -15,7 +15,7 @@ export default function App() {
       const distance = originalPosition - lastScroll.current;
 
       //stops fast scrolling on load
-      if ((lastScroll.current === 0)) {
+      if (lastScroll.current === 0) {
         lastScroll.current = originalPosition;
         return;
       }
@@ -235,7 +235,7 @@ export default function App() {
       return (
         <div className="project">
           <p className="subTitle">
-            And that animation you can see in the background
+            That line animation you can see in the background
           </p>
           <Background
             className="contentMedia"
@@ -305,8 +305,8 @@ export default function App() {
           </div>
           <p>
             <b>
-              (animation controls can lead to broken results, this is purely for
-              demonstration purposes)
+              (animation controls can lead to broken results, they are purely
+              for demonstration purposes)
             </b>
           </p>
           <p>This is a weird one.</p>

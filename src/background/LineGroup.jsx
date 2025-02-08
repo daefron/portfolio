@@ -121,7 +121,7 @@ export default function App({
       "," +
       (line.angle / maxAngle.current) * 140 +
       "," +
-      (1 - line.speed / (baseSpeed.current * 0.33)) +
+      (1 - line.speed / (baseSpeed.current * 0.1)) +
       ")";
     function Pointer({ angle }) {
       return (
