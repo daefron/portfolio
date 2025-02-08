@@ -46,7 +46,7 @@ export default function App({
           } else if (this.speed < -speed) {
             this.speed = -speed;
           }
-          
+
           this.angle += this.speed * mult;
         }
       }
@@ -89,10 +89,10 @@ export default function App({
       return (
         <div
           style={{
-            width: "1px",
+            width: "10px",
             backgroundColor: backgroundColor,
             height: "200%",
-            transform: "rotate(" + (line.angle + angle) + "deg)",
+            transform: "rotate(" + (line.angle + angle) + "deg) scale(0.15, 1)",
             position: "fixed",
             userSelect: "none",
           }}
@@ -128,11 +128,12 @@ export default function App({
           className="pointer"
           style={{
             position: "absolute",
-            width: "2px",
+            width: "10px",
             backgroundColor: backgroundColor,
             marginTop: "max(-20vw, -180px)",
             height: "min(85vw, 670px)",
-            transform: "rotate(" + (line.angle + angle) + "deg)",
+            transform:
+              "rotate(" + (line.angle + angle) + "deg) scale(0.25, 1) ",
             userSelect: "none",
           }}
         ></div>
