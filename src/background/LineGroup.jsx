@@ -1,17 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 export default function App({
-  type,
-  speedMult = { current: 1 },
-  lineAmount = { current: 7 },
-  minAngle = { current: 0 },
-  maxAngle = { current: 45 },
-  baseSpeed = { current: 0.1 },
+  type, // animation positioning, either inline or background
+  speedMult = { current: 1 }, //display speed multiplier
+  lineAmount = { current: 7 }, //total amount of lines, must be positive
+  minAngle = { current: 0 }, //start angle
+  maxAngle = { current: 45 }, //end angle
+  baseSpeed = { current: 0.1 }, //baseline speed, usually not changed
 }) {
   const [lineAngles, setLineAngles] = useState([]);
   const lines = useRef([]);
   useEffect(() => {
+    //creates lines from scratch, resets animation
     function makeLines() {
+      //value that affects how far lines go past angle limits
       const margin = 205;
+      
+      //distance between lines
       const lineSpacing =
         ((maxAngle.current - minAngle.current) * 2 +
           80 * (baseSpeed.current * 10)) /
@@ -23,43 +27,51 @@ export default function App({
         }
         updateDirection() {
           const mult = speedMult.current;
+          const speed = baseSpeed.current;
           let neutralMult = mult;
           if (mult < 0) {
             neutralMult *= -1;
           }
           if (
-            this.angle <= minAngle.current + margin * baseSpeed.current &&
-            this.speed + (baseSpeed.current / 400) * mult <
-              baseSpeed.current * neutralMult
+            this.angle <= minAngle.current + margin * speed &&
+            this.speed + (speed / 400) * mult < speed * neutralMult
           ) {
-            this.speed += (baseSpeed.current / 400) * mult;
+            this.speed += (speed / 400) * mult;
           } else if (
-            this.angle >= maxAngle.current - margin * baseSpeed.current &&
-            this.speed - (baseSpeed.current / 400) * mult >
-              -baseSpeed.current * neutralMult
+            this.angle >= maxAngle.current - margin * speed &&
+            this.speed - (speed / 400) * mult > -speed * neutralMult
           ) {
-            this.speed -= (baseSpeed.current / 400) * mult;
+            this.speed -= (speed / 400) * mult;
           }
           this.angle += this.speed * mult;
         }
       }
-      lines.current = [];
+      //prevents creation at invalid speeds
       const lastSpeed = speedMult.current;
       speedMult.current = 1;
+
+      lines.current = [];
       for (let i = 0; i < lineAmount.current; i++) {
         let newLine = new Line(-lineSpacing * i, -baseSpeed.current);
         lines.current.push(newLine);
       }
+
+      //gives enough time for lines to settle into place
       for (let i = 0; i < 5000; i++) {
         lines.current.forEach((line) => line.updateDirection());
       }
+
       speedMult.current = lastSpeed;
     }
+
     makeLines();
+
     setInterval(() => {
+      //resets lines if lineAmount changes
       if (lines.current.length !== lineAmount.current) {
         makeLines();
       }
+      
       lines.current.forEach((line) => {
         line.updateDirection();
       });
