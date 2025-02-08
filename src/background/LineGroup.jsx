@@ -14,7 +14,7 @@ export default function App({
     function makeLines() {
       //value that affects how far lines go past angle limits
       const margin = 205;
-      
+
       //distance between lines
       const lineSpacing =
         ((maxAngle.current - minAngle.current) * 2 +
@@ -149,7 +149,7 @@ export default function App({
           userSelect: "none",
         }}
       >
-        <Pointer angle={68 - minAngle.current} />
+        <Pointer angle={67.5 - minAngle.current} />
       </div>
     );
   }
