@@ -1,49 +1,65 @@
 import { useState, useRef, useEffect } from "react";
-export default function App({ speedMult, position }) {
-  const speed = 0.1;
-  const margin = 205;
-  const amountOfLines = 7;
-  const minAngle = 0;
-  const maxAngle = 45;
-  const lineSpacing =
-    ((maxAngle - minAngle) * 2 + 80 * (speed * 10)) / amountOfLines;
-  const lines = useRef([]);
-  class Line {
-    constructor(angle, speed) {
-      this.angle = angle;
-      this.speed = speed;
-    }
-    updateDirection() {
-      const mult = speedMult.current;
-      let neutralMult = mult;
-      if (mult < 0) {
-        neutralMult *= -1;
-      }
-      if (
-        this.angle <= minAngle + margin * speed &&
-        this.speed + (speed / 400) * mult < speed * neutralMult
-      ) {
-        this.speed += (speed / 400) * mult;
-      } else if (
-        this.angle >= maxAngle - margin * speed &&
-        this.speed - (speed / 400) * mult > -speed * neutralMult
-      ) {
-        this.speed -= (speed / 400) * mult;
-      }
-      this.angle += this.speed * mult;
-    }
-  }
+export default function App({
+  type,
+  speedMult = { current: 1 },
+  lineAmount = { current: 7 },
+  minAngle = { current: 0 },
+  maxAngle = { current: 45 },
+  baseSpeed = { current: 0.1 },
+}) {
   const [lineAngles, setLineAngles] = useState([]);
+  const lines = useRef([]);
   useEffect(() => {
-    lines.current = [];
-    for (let i = 0; i < amountOfLines; i++) {
-      let newLine = new Line(-lineSpacing * i, -speed);
-      lines.current.push(newLine);
+    function makeLines() {
+      const margin = 205;
+      const lineSpacing =
+        ((maxAngle.current - minAngle.current) * 2 +
+          80 * (baseSpeed.current * 10)) /
+        lineAmount.current;
+      class Line {
+        constructor(angle, baseSpeed) {
+          this.angle = angle;
+          this.speed = baseSpeed;
+        }
+        updateDirection() {
+          const mult = speedMult.current;
+          let neutralMult = mult;
+          if (mult < 0) {
+            neutralMult *= -1;
+          }
+          if (
+            this.angle <= minAngle.current + margin * baseSpeed.current &&
+            this.speed + (baseSpeed.current / 400) * mult <
+              baseSpeed.current * neutralMult
+          ) {
+            this.speed += (baseSpeed.current / 400) * mult;
+          } else if (
+            this.angle >= maxAngle.current - margin * baseSpeed.current &&
+            this.speed - (baseSpeed.current / 400) * mult >
+              -baseSpeed.current * neutralMult
+          ) {
+            this.speed -= (baseSpeed.current / 400) * mult;
+          }
+          this.angle += this.speed * mult;
+        }
+      }
+      lines.current = [];
+      const lastSpeed = speedMult.current;
+      speedMult.current = 1;
+      for (let i = 0; i < lineAmount.current; i++) {
+        let newLine = new Line(-lineSpacing * i, -baseSpeed.current);
+        lines.current.push(newLine);
+      }
+      for (let i = 0; i < 5000; i++) {
+        lines.current.forEach((line) => line.updateDirection());
+      }
+      speedMult.current = lastSpeed;
     }
-    for (let i = 0; i < 5000; i++) {
-      lines.current.forEach((line) => line.updateDirection());
-    }
+    makeLines();
     setInterval(() => {
+      if (lines.current.length !== lineAmount.current) {
+        makeLines();
+      }
       lines.current.forEach((line) => {
         line.updateDirection();
       });
@@ -53,7 +69,7 @@ export default function App({ speedMult, position }) {
 
   function NewLine({ line }) {
     const backgroundColor =
-      "RGBA(222,222,222," + (1 - line.speed / (speed * 0.33)) + ")";
+      "RGBA(222,222,222," + (1 - line.speed / (baseSpeed.current * 0.33)) + ")";
     function Pointer({ angle }) {
       return (
         <div
@@ -64,6 +80,7 @@ export default function App({ speedMult, position }) {
             height: 5000,
             transform: "rotate(" + (line.angle + angle) + "deg)",
             position: "fixed",
+            userSelect: "none",
           }}
         ></div>
       );
@@ -76,6 +93,7 @@ export default function App({ speedMult, position }) {
           width: "100%",
           display: "flex",
           alignItems: "center",
+          userSelect: "none",
         }}
       >
         <Pointer angle={180} />
@@ -85,13 +103,13 @@ export default function App({ speedMult, position }) {
   function ProjectLine({ line }) {
     const backgroundColor =
       "RGBA(" +
-      (line.angle / maxAngle) * 150 +
+      (line.angle / maxAngle.current) * 150 +
       "," +
-      (2 + line.angle / maxAngle) * 111 +
+      (2 + line.angle / maxAngle.current) * 111 +
       "," +
-      (line.angle / maxAngle) * 140 +
+      (line.angle / maxAngle.current) * 140 +
       "," +
-      (1 - line.speed / (speed * 0.33)) +
+      (1 - line.speed / (baseSpeed.current * 0.33)) +
       ")";
     function Pointer({ angle }) {
       return (
@@ -104,6 +122,7 @@ export default function App({ speedMult, position }) {
             marginTop: "max(-20vw, -180px)",
             height: "min(85vw, 670px)",
             transform: "rotate(" + (line.angle + angle) + "deg)",
+            userSelect: "none",
           }}
         ></div>
       );
@@ -115,13 +134,14 @@ export default function App({ speedMult, position }) {
           width: "100%",
           display: "flex",
           justifyContent: "center",
+          userSelect: "none",
         }}
       >
-        <Pointer angle={68} />
+        <Pointer angle={68 - minAngle.current} />
       </div>
     );
   }
-  if (position) {
+  if (type === "inline") {
     return (
       <div className="backgroundHolder" style={{ height: "min(45vw, 320px)" }}>
         {lines.current.map((line, i) => {
@@ -129,7 +149,8 @@ export default function App({ speedMult, position }) {
         })}
       </div>
     );
-  } else {
+  }
+  if (type === "background") {
     return (
       <div
         className="backgroundHolder"
@@ -138,6 +159,7 @@ export default function App({ speedMult, position }) {
           left: "20vw",
           zIndex: "-50",
           position: "fixed",
+          userSelect: "none",
         }}
       >
         {lines.current.map((line, i) => {

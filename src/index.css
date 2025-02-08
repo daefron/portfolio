@@ -3,7 +3,8 @@
   padding: 0;
 }
 p,
-a {
+a,
+label {
   font-size: 12px;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
@@ -63,6 +64,23 @@ body {
 .footer > div {
   padding-block: 4px;
 }
+.animationControls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 3px;
+  column-gap: 10px;
+}
+.animationControl {
+  display: flex;
+  gap: 5px;
+}
+.animationControl > label {
+  width: fit-content;
+}
+.animationControl > input {
+  width: 1%;
+  flex-grow: 1;
+}
 @media (min-width: 400px) {
   .title {
     font-size: 19px;
@@ -71,7 +89,8 @@ body {
     font-size: 17px;
   }
   p,
-  a {
+  a,
+  label {
     font-size: 15px;
   }
 }
@@ -88,7 +107,8 @@ body {
     font-size: 18px;
   }
   p,
-  a {
+  a,
+  label {
     font-size: 16px;
   }
 }

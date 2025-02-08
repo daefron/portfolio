@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Background from "./background/LineGroup";
 import runVideo from "./videos/runVid.mp4";
 import thingConnectorImage from "./images/thingConnectorImage.png";
@@ -9,10 +9,18 @@ export default function App() {
   const lastScroll = useRef(0);
   useEffect(() => {
     const scrollEvent = addEventListener("scroll", (e) => scroll(e));
-    function scroll(event) {
+    function scroll() {
       removeEventListener("scroll", scrollEvent);
       const originalPosition = window.scrollY;
       const distance = originalPosition - lastScroll.current;
+
+      //stops fast scrolling on load
+      if ((lastScroll.current === 0)) {
+        lastScroll.current = originalPosition;
+        return;
+      }
+
+      //slows animation down slowly after not scrolling
       function friction() {
         setTimeout(() => {
           if (lastScroll.current === originalPosition) {
@@ -27,12 +35,14 @@ export default function App() {
         }, 500);
       }
       friction();
-      lastScroll.current = originalPosition;
+
+      //limits on max scrolling speeds
       if (backgroundSpeed.current < 5 && backgroundSpeed.current > -5) {
         backgroundSpeed.current += distance / 100;
       } else {
         backgroundSpeed.current *= 0.8;
       }
+      lastScroll.current = originalPosition;
     }
   }, []);
   function Header() {
@@ -212,6 +222,16 @@ export default function App() {
       );
     }
     function Project4() {
+      const lineAmount = useRef(15);
+      const [lineAmountState, setLineAmountState] = useState(
+        lineAmount.current
+      );
+      const speed = useRef(1);
+      const [speedState, setSpeedState] = useState(speed.current);
+      const minAngle = useRef(0);
+      const [minAngleState, setMinAngleState] = useState(minAngle.current);
+      const maxAngle = useRef(45);
+      const [maxAngleState, setMaxAngleState] = useState(maxAngle.current);
       return (
         <div className="project">
           <p className="subTitle">
@@ -219,14 +239,84 @@ export default function App() {
           </p>
           <Background
             className="contentMedia"
-            speedMult={backgroundSpeed}
-            position={"project"}
+            type={"inline"}
+            lineAmount={lineAmount}
+            speedMult={speed}
+            minAngle={minAngle}
+            maxAngle={maxAngle}
           />
+          <div className="animationControls">
+            <div className="animationControl">
+              <label htmlFor="range">Line count: {lineAmountState}</label>
+              <input
+                type="range"
+                name="lineAmount"
+                min={0}
+                max={100}
+                defaultValue={lineAmount.current}
+                onChange={(e) => {
+                  lineAmount.current = Number(e.target.value);
+                  setLineAmountState(lineAmount.current);
+                }}
+              ></input>
+            </div>
+            <div className="animationControl">
+              <label htmlFor="range">Speed: {speedState}</label>
+              <input
+                type="range"
+                name="speed"
+                min={-10}
+                max={10}
+                step="any"
+                defaultValue={speed.current}
+                onChange={(e) => {
+                  speed.current = Number(e.target.value);
+                  setSpeedState(speed.current);
+                }}
+              ></input>
+            </div>
+            <div className="animationControl">
+              <label htmlFor="minAngle">Start angle: {minAngleState}</label>
+              <input
+                type="range"
+                name="minAngle"
+                min={0}
+                max={maxAngleState}
+                step="any"
+                defaultValue={minAngle.current}
+                onChange={(e) => {
+                  minAngle.current = Number(e.target.value);
+                  setMinAngleState(minAngle.current);
+                }}
+              ></input>
+            </div>
+            <div className="animationControl">
+              <label htmlFor="maxAngle">End angle: {maxAngleState}</label>
+              <input
+                type="range"
+                name="maxAngle"
+                min={minAngleState}
+                max={60}
+                step="any"
+                defaultValue={maxAngle.current}
+                onChange={(e) => {
+                  maxAngle.current = Number(e.target.value);
+                  setMaxAngleState(maxAngle.current);
+                }}
+              ></input>
+            </div>
+          </div>
+          <p>
+            <b>
+              (animation controls can lead to broken results, this is purely for
+              demonstration purposes)
+            </b>
+          </p>
           <p>This is a weird one.</p>
           <p>
             What initially started out as an algorithm for a wind generation mod
-            in the videogame Beam.NG (coming soon) turned into a very tweakable, dynamic "3D"
-            animation using purely JavaScript and CSS in React.
+            in the videogame Beam.NG (coming soon) turned into a very tweakable,
+            dynamic "3D" animation using purely JavaScript and CSS in React.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -270,7 +360,7 @@ export default function App() {
   }
   return (
     <>
-      <Background speedMult={backgroundSpeed} />
+      <Background type="background" speedMult={backgroundSpeed} />
       <div className="mainDiv">
         <Header />
         <Projects />
