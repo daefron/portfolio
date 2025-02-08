@@ -28,10 +28,7 @@ export default function App({
         updateDirection() {
           const mult = speedMult.current;
           const speed = baseSpeed.current;
-          let neutralMult = mult;
-          if (mult < 0) {
-            neutralMult *= -1;
-          }
+
           if (
             this.angle < minAngle.current + margin * speed &&
             this.speed + (speed * mult) / 410 < speed
@@ -43,11 +40,13 @@ export default function App({
           ) {
             this.speed -= (speed * mult) / 410;
           }
+
           if (this.speed > speed) {
             this.speed = speed;
           } else if (this.speed < -speed) {
             this.speed = -speed;
           }
+          
           this.angle += this.speed * mult;
         }
       }
@@ -80,7 +79,7 @@ export default function App({
         line.updateDirection();
       });
       setLineAngles(lines.current.map((line) => line.angle));
-    }, 20);
+    }, 16.666);
   }, []);
 
   function NewLine({ line }) {
@@ -89,11 +88,10 @@ export default function App({
     function Pointer({ angle }) {
       return (
         <div
-          className="pointer"
           style={{
             width: "1px",
             backgroundColor: backgroundColor,
-            height: 5000,
+            height: "200%",
             transform: "rotate(" + (line.angle + angle) + "deg)",
             position: "fixed",
             userSelect: "none",
@@ -103,10 +101,7 @@ export default function App({
     }
     return (
       <div
-        className="pointerHolder"
         style={{
-          position: "fixed",
-          width: "100%",
           display: "flex",
           alignItems: "center",
           userSelect: "none",
