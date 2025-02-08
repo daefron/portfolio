@@ -16,7 +16,10 @@ export default function App() {
       function friction() {
         setTimeout(() => {
           if (lastScroll.current === originalPosition) {
-            if (backgroundSpeed.current > 1.5 || backgroundSpeed.current < -1.5) {
+            if (
+              backgroundSpeed.current > 1.5 ||
+              backgroundSpeed.current < -1.5
+            ) {
               backgroundSpeed.current *= 0.8;
               friction();
             }
@@ -25,7 +28,11 @@ export default function App() {
       }
       friction();
       lastScroll.current = originalPosition;
-      backgroundSpeed.current = distance;
+      if (backgroundSpeed.current < 5 && backgroundSpeed.current > -5) {
+        backgroundSpeed.current += distance / 100;
+      } else {
+        backgroundSpeed.current *= 0.8;
+      }
     }
   }, []);
   function Header() {

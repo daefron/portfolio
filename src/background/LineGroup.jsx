@@ -29,12 +29,6 @@ export default function App({ speedMult, position }) {
         this.speed - (speed / 400) * mult > -speed * neutralMult
       ) {
         this.speed -= (speed / 400) * mult;
-      } else {
-        if (this.speed > 0) {
-          this.speed = speed;
-        } else {  
-          this.speed = -speed;
-        }
       }
       this.angle += this.speed * mult;
     }
@@ -50,11 +44,6 @@ export default function App({ speedMult, position }) {
       lines.current.forEach((line) => line.updateDirection());
     }
     setInterval(() => {
-      if (speedMult.current > 4) {
-        speedMult.current = 4;
-      } else if (speedMult.current < -4) {
-        speedMult.current = -4;
-      }
       lines.current.forEach((line) => {
         line.updateDirection();
       });
@@ -113,7 +102,7 @@ export default function App({ speedMult, position }) {
             width: "2px",
             backgroundColor: backgroundColor,
             marginTop: "max(-20vw, -180px)",
-            height:"min(85vw, 670px)",
+            height: "min(85vw, 670px)",
             transform: "rotate(" + (line.angle + angle) + "deg)",
           }}
         ></div>
@@ -145,7 +134,7 @@ export default function App({ speedMult, position }) {
       <div
         className="backgroundHolder"
         style={{
-          top:"70lvh",
+          top: "70lvh",
           left: "20vw",
           zIndex: "-50",
           position: "fixed",
