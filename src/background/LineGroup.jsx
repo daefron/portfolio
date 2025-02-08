@@ -33,15 +33,20 @@ export default function App({
             neutralMult *= -1;
           }
           if (
-            this.angle <= minAngle.current + margin * speed &&
-            this.speed + (speed / 400) * mult < speed * neutralMult
+            this.angle < minAngle.current + margin * speed &&
+            this.speed + (speed * mult) / 410 < speed
           ) {
-            this.speed += (speed / 400) * mult;
+            this.speed += (speed * mult) / 410;
           } else if (
-            this.angle >= maxAngle.current - margin * speed &&
-            this.speed - (speed / 400) * mult > -speed * neutralMult
+            this.angle > maxAngle.current - margin * speed &&
+            this.speed - (speed * mult) / 410 > -speed
           ) {
-            this.speed -= (speed / 400) * mult;
+            this.speed -= (speed * mult) / 410;
+          }
+          if (this.speed > speed) {
+            this.speed = speed;
+          } else if (this.speed < -speed) {
+            this.speed = -speed;
           }
           this.angle += this.speed * mult;
         }
@@ -71,7 +76,6 @@ export default function App({
       if (lines.current.length !== lineAmount.current) {
         makeLines();
       }
-      
       lines.current.forEach((line) => {
         line.updateDirection();
       });
