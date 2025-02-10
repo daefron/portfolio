@@ -1,90 +1,85 @@
 import { useState, useRef, useEffect } from "react";
 export default function App({
   type, // animation positioning, either inline or background
-  speedMult = { current: 1 }, //display speed multiplier
+  duration = { current: 1800 }, //amount of frames one revolution takes
+  speedMult = { current: 1 }, //multiplier for speed of revolutions
   lineAmount = { current: 7 }, //total amount of lines, must be positive
   minAngle = { current: 0 }, //start angle
   maxAngle = { current: 45 }, //end angle
-  baseSpeed = { current: 0.1 }, //baseline speed, usually not changed
 }) {
   const [lineAngles, setLineAngles] = useState([]);
   const lines = useRef([]);
   useEffect(() => {
     //creates lines from scratch, resets animation
     function makeLines() {
-      //value that affects how far lines go past angle limits
-      const margin = 205;
+      const diameter = maxAngle.current - minAngle.current;
+      const radius = diameter / 2;
 
-      //distance between lines
-      const lineSpacing =
-        ((maxAngle.current - minAngle.current) * 2 +
-          80 * (baseSpeed.current * 10)) /
-        lineAmount.current;
+      const timeline = timelineMaker(radius);
+      //creates an array of points for the lines to reference
+      function timelineMaker(radius) {
+        let timelineArray = [];
+        for (let i = 0; i <= duration.current; i++) {
+          const timePercentage = i / duration.current;
+          let timeAngle = timePercentage * 2 * Math.PI;
+          timelineArray.push([
+            radius * Math.sin(timeAngle),
+            radius * Math.cos(timeAngle),
+          ]);
+        }
+        return timelineArray;
+      }
       class Line {
-        constructor(angle, baseSpeed) {
-          this.angle = angle;
-          this.speed = baseSpeed;
+        constructor(initialCoords, initialTimeline) {
+          this.coords = initialCoords;
+          this.timelinePosition = initialTimeline;
         }
         updateDirection() {
-          const mult = speedMult.current;
-          const speed = baseSpeed.current;
-
-          if (
-            this.angle < minAngle.current + margin * speed &&
-            this.speed + (speed * mult) / 410 < speed
-          ) {
-            this.speed += (speed * mult) / 410;
-          } else if (
-            this.angle > maxAngle.current - margin * speed &&
-            this.speed - (speed * mult) / 410 > -speed
-          ) {
-            this.speed -= (speed * mult) / 410;
+          this.timelinePosition += Math.round(speedMult.current);
+          if (this.timelinePosition > duration.current) {
+            this.timelinePosition -= duration.current;
+          } else if (this.timelinePosition < 0) {
+            this.timelinePosition += duration.current;
           }
-
-          if (this.speed > speed) {
-            this.speed = speed;
-          } else if (this.speed < -speed) {
-            this.speed = -speed;
-          }
-
-          this.angle += this.speed * mult;
+          this.coords = timeline[this.timelinePosition];
         }
       }
-      //prevents creation at invalid speeds
-      const lastSpeed = speedMult.current;
-      speedMult.current = 1;
 
       lines.current = [];
       for (let i = 0; i < lineAmount.current; i++) {
-        let newLine = new Line(-lineSpacing * i, -baseSpeed.current);
+        const timePercentage = i / lineAmount.current;
+        const arrayPosition = Math.round(timePercentage * duration.current);
+        const timelinePosition = timeline[arrayPosition];
+        let newLine = new Line(timelinePosition, arrayPosition);
         lines.current.push(newLine);
       }
-
-      //gives enough time for lines to settle into place
-      for (let i = 0; i < 5000; i++) {
-        lines.current.forEach((line) => line.updateDirection());
-      }
-
-      speedMult.current = lastSpeed;
     }
 
     makeLines();
+    let lastMaxAngle = maxAngle.current;
+    let lastMinAngle = minAngle.current;
 
     setInterval(() => {
       //resets lines if lineAmount changes
-      if (lines.current.length !== lineAmount.current) {
+      if (
+        lines.current.length !== lineAmount.current ||
+        lastMaxAngle !== maxAngle.current ||
+        lastMinAngle !== minAngle.current
+      ) {
+        lastMaxAngle = maxAngle.current;
+        lastMinAngle = minAngle.current;
         makeLines();
       }
       lines.current.forEach((line) => {
         line.updateDirection();
       });
-      setLineAngles(lines.current.map((line) => line.angle));
+      setLineAngles(lines.current.map((line) => line.coords[0]));
     }, 16.666);
   }, []);
 
   function NewLine({ line }) {
     const backgroundColor =
-      "RGBA(222,222,222," + (1 - line.speed / (baseSpeed.current * 0.33)) + ")";
+      "RGBA(222,222,222," + (1 - line.coords[1] * 0.15) + ")";
     function Pointer({ angle }) {
       return (
         <div
@@ -92,7 +87,8 @@ export default function App({
             width: "10px",
             backgroundColor: backgroundColor,
             height: "200%",
-            transform: "rotate(" + (line.angle + angle) + "deg) scale(0.15, 1)",
+            transform:
+              "rotate(" + (line.coords[0] + angle) + "deg) scale(0.15, 1)",
             position: "fixed",
             userSelect: "none",
           }}
@@ -114,13 +110,13 @@ export default function App({
   function ProjectLine({ line }) {
     const backgroundColor =
       "RGBA(" +
-      (line.angle / maxAngle.current) * 150 +
+      (line.coords[1] / maxAngle.current) * 150 +
       "," +
-      (2 + line.angle / maxAngle.current) * 111 +
+      (2 + line.coords[1] / maxAngle.current) * 111 +
       "," +
-      (line.angle / maxAngle.current) * 140 +
+      (line.coords[1] / maxAngle.current) * 140 +
       "," +
-      (1 - line.speed / (baseSpeed.current * 0.1)) +
+      (1 - line.coords[1] / (maxAngle.current * 0.1)) +
       ")";
     function Pointer({ angle }) {
       return (
@@ -133,7 +129,7 @@ export default function App({
             marginTop: "max(-20vw, -180px)",
             height: "min(85vw, 670px)",
             transform:
-              "rotate(" + (line.angle + angle) + "deg) scale(0.25, 1) ",
+              "rotate(" + (line.coords[0] + angle) + "deg) scale(0.25, 1) ",
             userSelect: "none",
           }}
         ></div>
@@ -149,7 +145,7 @@ export default function App({
           userSelect: "none",
         }}
       >
-        <Pointer angle={67.5 - minAngle.current} />
+        <Pointer angle={90} />
       </div>
     );
   }
