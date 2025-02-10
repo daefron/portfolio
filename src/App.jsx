@@ -3,6 +3,7 @@ import Background from "./background/LineGroup";
 import runVideo from "./videos/runVid.mp4";
 import thingConnectorImage from "./images/thingConnectorImage.png";
 import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
+import windVideo from "./videos/windVid.mp4";
 import blank from "./images/blank.png";
 export default function App() {
   const backgroundSpeed = useRef(1);
@@ -219,6 +220,55 @@ export default function App() {
       );
     }
     function Project4() {
+      return (
+        <div className="project projectLine">
+          <p className="subTitle">Winds of Change</p>
+          <video className="contentMedia" poster={blank} autoPlay muted loop>
+            <source src={windVideo} type="video/mp4"></source>
+          </video>
+          <p>
+            A dynamic wind mod for the car simulator game Beam.NG (pictured is
+            the user interface for the mod).
+          </p>
+          <p>
+            I felt that Beam.NG had a big gap in its driving simulation in that
+            there was only static wind, so I added winds that change to the
+            game.
+          </p>
+          <p>
+            This more or less gives you a reasonlable wind and angle value based
+            on the range set.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://angular.dev/">
+              Angular
+            </a>
+            <a target="_blank" href="https://www.lua.org/">
+              Lua
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://notuploadedyetsorry">
+              Mod repo
+            </a>
+            <a
+              target="_blank"
+              href="https://github.com/daefron/winds-of-change"
+            >
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function Project5() {
       const lineAmount = useRef(15);
       const [lineAmountState, setLineAmountState] = useState(
         lineAmount.current
@@ -328,6 +378,7 @@ export default function App() {
         <Project2 />
         <Project3 />
         <Project4 />
+        <Project5 />
       </div>
     );
   }
