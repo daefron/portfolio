@@ -255,8 +255,8 @@ export default function App() {
               gap: "10px",
             }}
           >
-            <a target="_blank" href="https://notuploadedyetsorry">
-              Mod repo
+            <a target="_blank" href="https://www.beamng.com/resources/winds-of-change.33596/">
+              Mod link
             </a>
             <a
               target="_blank"
