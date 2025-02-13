@@ -75,6 +75,59 @@ export default function App() {
     function Project1() {
       return (
         <div className="project projectLine">
+          <p className="subTitle">Winds of Change</p>
+          <video className="contentMedia" poster={blank} autoPlay muted loop>
+            <source src={windVideo} type="video/mp4"></source>
+          </video>
+          <p>
+            A dynamic wind mod for the car simulator game Beam.NG (pictured is
+            the user interface for the mod).
+          </p>
+          <p>
+            I felt that Beam.NG had a big gap in its driving simulation in that
+            there was only static wind, so I added winds that change to the
+            game.
+          </p>
+          <p>
+            This more or less gives you a reasonlable wind and angle value based
+            on the range set.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://angular.dev/">
+              Angular
+            </a>
+            <a target="_blank" href="https://www.lua.org/">
+              Lua
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a
+              target="_blank"
+              href="https://www.beamng.com/resources/winds-of-change.33596/"
+            >
+              Mod link
+            </a>
+            gi
+            <a
+              target="_blank"
+              href="https://github.com/daefron/winds-of-change"
+            >
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function Project2() {
+      return (
+        <div className="project projectLine">
           <p className="subTitle">Run Tracker</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
@@ -122,7 +175,7 @@ export default function App() {
         </div>
       );
     }
-    function Project2() {
+    function Project3() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Thing Connector</p>
@@ -175,7 +228,7 @@ export default function App() {
         </div>
       );
     }
-    function Project3() {
+    function Project4() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Spreadsheet Creep</p>
@@ -212,55 +265,6 @@ export default function App() {
             <a
               target="_blank"
               href="https://github.com/daefron/spreadsheet-creep"
-            >
-              Project GitHub
-            </a>
-          </div>
-        </div>
-      );
-    }
-    function Project4() {
-      return (
-        <div className="project projectLine">
-          <p className="subTitle">Winds of Change</p>
-          <video className="contentMedia" poster={blank} autoPlay muted loop>
-            <source src={windVideo} type="video/mp4"></source>
-          </video>
-          <p>
-            A dynamic wind mod for the car simulator game Beam.NG (pictured is
-            the user interface for the mod).
-          </p>
-          <p>
-            I felt that Beam.NG had a big gap in its driving simulation in that
-            there was only static wind, so I added winds that change to the
-            game.
-          </p>
-          <p>
-            This more or less gives you a reasonlable wind and angle value based
-            on the range set.
-          </p>
-          <p className="subTitle">Built with:</p>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <a target="_blank" href="https://angular.dev/">
-              Angular
-            </a>
-            <a target="_blank" href="https://www.lua.org/">
-              Lua
-            </a>
-          </div>
-          <p className="subTitle">Links:</p>
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-            }}
-          >
-            <a target="_blank" href="https://www.beamng.com/resources/winds-of-change.33596/">
-              Mod link
-            </a>
-            <a
-              target="_blank"
-              href="https://github.com/daefron/winds-of-change"
             >
               Project GitHub
             </a>
