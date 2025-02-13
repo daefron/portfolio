@@ -80,17 +80,17 @@ export default function App() {
             <source src={windVideo} type="video/mp4"></source>
           </video>
           <p>
-            A dynamic wind mod for the car simulator game Beam.NG (pictured is
-            the user interface for the mod).
+            A dynamic wind app for the car simulator Beam.NG (pictured is the
+            user interface for the mod).
           </p>
           <p>
             I felt that Beam.NG had a big gap in its driving simulation in that
-            there was only static wind, so I added winds that change to the
-            game.
+            there was only static wind, so I added winds that change naturally
+            over time to the engine.
           </p>
           <p>
-            This more or less gives you a reasonlable wind and angle value based
-            on the range set.
+            This gives you a reasonlably realistic depiction of wind, and can be
+            customised with user inputs.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -114,7 +114,6 @@ export default function App() {
             >
               Mod link
             </a>
-            gi
             <a
               target="_blank"
               href="https://github.com/daefron/winds-of-change"
