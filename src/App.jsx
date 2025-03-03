@@ -94,8 +94,8 @@ export default function App() {
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
-            <a target="_blank" href="https://angular.dev/">
-              Angular
+            <a target="_blank" href="https://angularjs.org/">
+              AngularJS
             </a>
             <a target="_blank" href="https://www.lua.org/">
               Lua
@@ -112,7 +112,7 @@ export default function App() {
               target="_blank"
               href="https://www.beamng.com/resources/winds-of-change.33596/"
             >
-              Mod link
+              Mod Page
             </a>
             <a
               target="_blank"
