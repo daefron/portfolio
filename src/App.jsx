@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics, track } from "@vercel/analytics/react";
 import Background from "./background/LineGroup";
 import runVideo from "./videos/runVid.mp4";
 import thingConnectorImage from "./images/thingConnectorImage.png";
@@ -73,9 +73,12 @@ export default function App() {
     );
   }
   function Projects() {
+    function windFlag() {
+      track("Wind Flag", {}, { flags: ["winds"] });
+    }
     function Project1() {
       return (
-        <div className="project projectLine">
+        <div className="project projectLine" onClick={windFlag}>
           <p className="subTitle">Winds of Change</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={windVideo} type="video/mp4"></source>
@@ -125,9 +128,12 @@ export default function App() {
         </div>
       );
     }
+    function runFlag() {
+      track("Run Flag", {}, { flags: ["runs"] });
+    }
     function Project2() {
       return (
-        <div className="project projectLine">
+        <div className="project projectLine" onClick={runFlag}>
           <p className="subTitle">Run Tracker</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
@@ -175,9 +181,12 @@ export default function App() {
         </div>
       );
     }
+    function thingFlag() {
+      track("Thing Flag", {}, { flags: ["things"] });
+    }
     function Project3() {
       return (
-        <div className="project projectLine">
+        <div className="project projectLine" onClick={thingFlag}>
           <p className="subTitle">Thing Connector</p>
           <img src={thingConnectorImage} className="contentMedia"></img>
           <p>
@@ -228,9 +237,12 @@ export default function App() {
         </div>
       );
     }
+    function spreadsheetFlag() {
+      track("Spreadsheet Flag", {}, { flags: ["spreadsheets"] });
+    }
     function Project4() {
       return (
-        <div className="project projectLine">
+        <div className="project projectLine" onClick={spreadsheetFlag}>
           <p className="subTitle">Spreadsheet Creep</p>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={spreadsheetVideo} type="video/mp4"></source>
@@ -272,6 +284,9 @@ export default function App() {
         </div>
       );
     }
+    function animationFlag() {
+      track("Animation Flag", {}, { flags: ["animations"] });
+    }
     function Project5() {
       const lineAmount = useRef(15);
       const [lineAmountState, setLineAmountState] = useState(
@@ -284,7 +299,7 @@ export default function App() {
       const maxAngle = useRef(45);
       const [maxAngleState, setMaxAngleState] = useState(maxAngle.current);
       return (
-        <div className="project">
+        <div className="project" onClick={animationFlag}>
           <p className="subTitle">
             That line animation you can see in the background
           </p>
