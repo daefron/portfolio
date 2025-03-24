@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import Background from "./background/LineGroup";
 import runVideo from "./videos/runVid.mp4";
 import thingConnectorImage from "./images/thingConnectorImage.png";
@@ -408,6 +409,7 @@ export default function App() {
   }
   return (
     <>
+      <Analytics />
       <Background type="background" speedMult={backgroundSpeed} />
       <div className="mainDiv">
         <Header />
