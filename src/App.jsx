@@ -5,6 +5,7 @@ import runVideo from "./videos/runVid.mp4";
 import thingConnectorImage from "./images/thingConnectorImage.png";
 import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
 import windVideo from "./videos/windVid.mp4";
+import jumpVideo from "./videos/jumpVid.mp4";
 import blank from "./images/blank.png";
 export default function App() {
   const backgroundSpeed = useRef(1);
@@ -36,7 +37,7 @@ export default function App() {
       friction();
 
       //limits on max scrolling speeds
-      if (backgroundSpeed.current < 5 && backgroundSpeed.current > -5) {
+      if (backgroundSpeed.current < 4 && backgroundSpeed.current > -3) {
         backgroundSpeed.current -= distance / 100;
       } else {
         backgroundSpeed.current *= 0.8;
@@ -73,7 +74,54 @@ export default function App() {
     );
   }
   function Projects() {
-    function Project1() {
+    function JumpProject() {
+      return (
+        <div className="project projectLine">
+          <p className="subTitle">Jump Button</p>
+          <video className="contentMedia" poster={blank} autoPlay muted loop>
+            <source src={jumpVideo} type="video/mp4"></source>
+          </video>
+          <p>
+            A mod for the car simulator BeamNG.drive that allows vehicles to
+            jump.
+          </p>
+          <p>
+            This started out as a bit of a joke, as I wanted to see how realistic
+            cars would handle an arcadey/cartoonish jump. As it turns out, not very well.
+          </p>
+          <p>
+            This mod seamlessly integrates into the current game, and can be customised with a UI app made in AngularJS.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://angularjs.org/">
+              AngularJS
+            </a>
+            <a target="_blank" href="https://www.lua.org/">
+              Lua
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a
+              target="_blank"
+              href="https://www.beamng.com/resources/jump-button.33905/"
+            >
+              Mod Page
+            </a>
+            <a target="_blank" href="https://github.com/daefron/jump-button/">
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
+    function WindProject() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Winds of Change</p>
@@ -81,11 +129,10 @@ export default function App() {
             <source src={windVideo} type="video/mp4"></source>
           </video>
           <p>
-            A dynamic wind app for the car simulator Beam.NG (pictured is the
-            user interface for the mod).
+            A dynamic wind app for the car simulator BeamNG.drive.
           </p>
           <p>
-            I felt that Beam.NG had a big gap in its driving simulation in that
+            I felt that BeamNG had a big gap in its driving simulation in that
             there was only static wind, so I added winds that change naturally
             over time to the engine.
           </p>
@@ -125,7 +172,7 @@ export default function App() {
         </div>
       );
     }
-    function Project2() {
+    function RunProject() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Run Tracker</p>
@@ -175,7 +222,7 @@ export default function App() {
         </div>
       );
     }
-    function Project3() {
+    function ThingProject() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Thing Connector</p>
@@ -228,7 +275,7 @@ export default function App() {
         </div>
       );
     }
-    function Project4() {
+    function SpreadsheetProject() {
       return (
         <div className="project projectLine">
           <p className="subTitle">Spreadsheet Creep</p>
@@ -272,7 +319,7 @@ export default function App() {
         </div>
       );
     }
-    function Project5() {
+    function AnimationProject() {
       const lineAmount = useRef(15);
       const [lineAmountState, setLineAmountState] = useState(
         lineAmount.current
@@ -362,8 +409,8 @@ export default function App() {
           </p>
           <p>This is a weird one.</p>
           <p>
-            What initially started out as an algorithm for a wind generation mod
-            in the videogame Beam.NG (coming soon) turned into a very tweakable,
+            What initially started out as an algorithm for my wind generation mod
+            in the videogame BeamNG turned into a very tweakable,
             dynamic "3D" animation using purely JavaScript and CSS in React.
           </p>
           <p className="subTitle">Built with:</p>
@@ -378,11 +425,12 @@ export default function App() {
     return (
       <div className="contentHolder">
         <p className="title">Projects</p>
-        <Project1 />
-        <Project2 />
-        <Project3 />
-        <Project4 />
-        <Project5 />
+        <JumpProject />
+        <WindProject />
+        <RunProject />
+        <ThingProject />
+        <SpreadsheetProject />
+        <AnimationProject />
       </div>
     );
   }
