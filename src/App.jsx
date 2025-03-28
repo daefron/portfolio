@@ -77,7 +77,12 @@ export default function App() {
     function JumpProject() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Jump Button</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Jump Button</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              BeamNG.drive mod
+            </p>
+          </div>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={jumpVideo} type="video/mp4"></source>
           </video>
@@ -86,11 +91,13 @@ export default function App() {
             jump.
           </p>
           <p>
-            This started out as a bit of a joke, as I wanted to see how realistic
-            cars would handle an arcadey/cartoonish jump. As it turns out, not very well.
+            This started out as a bit of a joke, as I wanted to see how
+            realistic cars would handle an arcadey/cartoonish jump. As it turns
+            out, not very well.
           </p>
           <p>
-            This mod seamlessly integrates into the current game, and can be customised with a UI app made in AngularJS.
+            This mod seamlessly integrates into the current game, and can be
+            customised with a UI app made in AngularJS.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -124,13 +131,16 @@ export default function App() {
     function WindProject() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Winds of Change</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Winds of Change</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              BeamNG.drive mod
+            </p>
+          </div>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={windVideo} type="video/mp4"></source>
           </video>
-          <p>
-            A dynamic wind app for the car simulator BeamNG.drive.
-          </p>
+          <p>A dynamic wind app for the car simulator BeamNG.drive.</p>
           <p>
             I felt that BeamNG had a big gap in its driving simulation in that
             there was only static wind, so I added winds that change naturally
@@ -175,7 +185,12 @@ export default function App() {
     function RunProject() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Run Tracker</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Run Tracker</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Personal fitness dashboard
+            </p>
+          </div>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
           </video>
@@ -225,7 +240,12 @@ export default function App() {
     function ThingProject() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Thing Connector</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Thing Connector</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Word association app
+            </p>
+          </div>
           <img src={thingConnectorImage} className="contentMedia"></img>
           <p>
             I like writing jokes, and I wanted to see the way an AI model thinks
@@ -278,7 +298,12 @@ export default function App() {
     function SpreadsheetProject() {
       return (
         <div className="project projectLine">
-          <p className="subTitle">Spreadsheet Creep</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Spreadsheet Creep</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Game engine
+            </p>
+          </div>
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={spreadsheetVideo} type="video/mp4"></source>
           </video>
@@ -409,9 +434,9 @@ export default function App() {
           </p>
           <p>This is a weird one.</p>
           <p>
-            What initially started out as an algorithm for my wind generation mod
-            in the videogame BeamNG turned into a very tweakable,
-            dynamic "3D" animation using purely JavaScript and CSS in React.
+            What initially started out as an algorithm for my wind generation
+            mod in the videogame BeamNG turned into a very tweakable, dynamic
+            "3D" animation using purely JavaScript and CSS in React.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
