@@ -25,22 +25,23 @@ export default function App() {
 
       //slows animation down slowly after not scrolling
       function friction() {
-        setTimeout(() => {
+        const interval = setInterval(() => {
           if (lastScroll.current === originalPosition) {
             if (backgroundSpeed.current > 1 || backgroundSpeed.current < -1) {
-              backgroundSpeed.current *= 0.8;
-              friction();
+              backgroundSpeed.current *= 0.99;
+            } else {
+              clearInterval(interval);
             }
           }
-        }, 500);
+        }, 10);
       }
       friction();
 
       //limits on max scrolling speeds
-      if (backgroundSpeed.current < 4 && backgroundSpeed.current > -3) {
+      if (backgroundSpeed.current < 2 && backgroundSpeed.current > -2) {
         backgroundSpeed.current -= distance / 100;
       } else {
-        backgroundSpeed.current *= 0.8;
+        backgroundSpeed.current *= 0.99;
       }
       lastScroll.current = originalPosition;
     }
@@ -89,7 +90,7 @@ export default function App() {
           </video>
           <p>
             A mod for the car simulator BeamNG.drive that allows vehicles to
-            jump.
+            jump, because why not?.
           </p>
           <p>
             This started out as a bit of a joke, as I wanted to see how
