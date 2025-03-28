@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Background from "./background/LineGroup";
-import runVideo from "./videos/runVid.mp4";
-import thingConnectorImage from "./images/thingConnectorImage.png";
-import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
-import windVideo from "./videos/windVid.mp4";
 import jumpVideo from "./videos/jumpVid.mp4";
+import windVideo from "./videos/windVid.mp4";
+import runVideo from "./videos/runVid.mp4";
+import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
+import thingConnectorImage from "./images/thingConnectorImage.png";
 import blank from "./images/blank.png";
 export default function App() {
   const backgroundSpeed = useRef(1);
@@ -49,10 +49,12 @@ export default function App() {
   function Header() {
     return (
       <div className="contentHolder">
-        <p className="title">Thomas Evans</p>
+        <p className="title" style={{ paddingBottom: 11 }}>
+          Thomas Evans
+        </p>
         <p>
-          I am a self-taught full-stack developer with a non-linear path into
-          programming.
+          I am a self-taught full-stack developer that took a non-linear path
+          into programming.
         </p>
         <p>
           Before transitioning into development, I spent nearly a decade working
@@ -229,7 +231,7 @@ export default function App() {
               gap: "10px",
             }}
           >
-            <a target="_blank" href="https://runtracker.netlify.app">
+            <a target="_blank" href="https://run.thomasevans.org">
               Live site
             </a>
             <a target="_blank" href="https://github.com/daefron/run-tracker">
@@ -284,7 +286,7 @@ export default function App() {
               gap: "10px",
             }}
           >
-            <a target="_blank" href="https://thingconnector.netlify.app">
+            <a target="_blank" href="https://thing.thomasevans.org">
               Live site
             </a>
             <a
@@ -333,7 +335,7 @@ export default function App() {
               gap: "10px",
             }}
           >
-            <a target="_blank" href="https://spreadsheetcreep.netlify.app">
+            <a target="_blank" href="https://spreadsheet.thomasevans.org/">
               Live site
             </a>
             <a
@@ -451,7 +453,15 @@ export default function App() {
     }
     return (
       <div className="contentHolder">
-        <p className="title">Projects</p>
+        <p
+          className="title"
+          style={{
+            paddingBottom: 15,
+            borderBottom: "dashed 2px rgb(90,90,90)",
+          }}
+        >
+          Projects
+        </p>
         <JumpProject />
         <WindProject />
         <RunProject />
