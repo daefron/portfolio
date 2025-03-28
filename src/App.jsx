@@ -68,7 +68,8 @@ export default function App() {
         <p>
           At this point, I feel highly confident in my understanding of
           front-end (<b>HTML</b>,<b> CSS</b>,<b> JavaScript</b>,<b> React</b>)
-          and back-end (<b>Node.js</b>, <b>Express</b>,<b> SQL</b>) development.
+          and back-end (<b>Node.js</b>, <b>Express</b>,<b> SQL</b>) development,
+          and am constantly learning more along the way.
         </p>
       </div>
     );
