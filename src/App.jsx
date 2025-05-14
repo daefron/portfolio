@@ -99,7 +99,7 @@ export default function App() {
           </p>
           <p>
             So I built a tool that does the busywork for you, visually
-            displaying a weather data by the hour across nearby locations.
+            displaying weather data by the hour across nearby locations.
           </p>
           <p className="subTitle">Built with:</p>
           <div style={{ display: "flex", gap: "10px" }}>
