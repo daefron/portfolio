@@ -5,6 +5,7 @@ import jumpVideo from "./videos/jumpVid.mp4";
 import windVideo from "./videos/windVid.mp4";
 import runVideo from "./videos/runVid.mp4";
 import spreadsheetVideo from "./videos/spreadsheetVid.mp4";
+import weatherImage from "./images/weatherImage.png";
 import thingConnectorImage from "./images/thingConnectorImage.png";
 import blank from "./images/blank.png";
 export default function App() {
@@ -78,6 +79,63 @@ export default function App() {
     );
   }
   function Projects() {
+    function WeatherProject() {
+      return (
+        <div className="project projectLine">
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p className="subTitle">Better Weather</p>
+            <p className="subTitle" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Local forecast explorer
+            </p>
+          </div>
+          <p>
+            A weather app that makes it easy to find if there's better weather.
+          </p>
+          <img src={weatherImage} className="contentMedia"></img>
+          <p>
+            It was cold, wet, and the suburb I had planned a day-trip to was
+            also miserable. I figured somewhere nearby had to be nicer, but
+            checking each place manually was a chore.
+          </p>
+          <p>
+            So I built a tool that does the busywork for you, visually
+            displaying a weather data by the hour across nearby locations.
+          </p>
+          <p className="subTitle">Built with:</p>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <a target="_blank" href="https://www.typescriptlang.org/">
+              TypeScript
+            </a>
+            <a target="_blank" href="https://react.dev/">
+              React
+            </a>
+            <a target="_blank" href="https://expressjs.com/">
+              Express
+            </a>
+            <a target="_blank" href="https://open-meteo.com/">
+              Open-Meteo API
+            </a>
+            <a target="_blank" href="https://developers.google.com/maps">
+              Google Maps API
+            </a>
+          </div>
+          <p className="subTitle">Links:</p>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <a target="_blank" href="https://weather.thomasevans.org/">
+              Live Site
+            </a>
+            <a target="_blank" href="https://github.com/daefron/better-weather">
+              Project GitHub
+            </a>
+          </div>
+        </div>
+      );
+    }
     function JumpProject() {
       return (
         <div className="project projectLine">
@@ -462,6 +520,7 @@ export default function App() {
         >
           Projects
         </p>
+        <WeatherProject />
         <JumpProject />
         <WindProject />
         <RunProject />
