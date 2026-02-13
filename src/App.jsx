@@ -256,7 +256,7 @@ export default function App() {
           <video className="contentMedia" poster={blank} autoPlay muted loop>
             <source src={runVideo} type="video/mp4"></source>
           </video>
-          <p>So my girlfriend got me a Fitbit for my birthday...</p>
+          <p>So I got a Fitbit for my birthday...</p>
           <p>
             This is a dashboard and API that use data collected from the Fitbit
             API to better visualise my progress in running.
